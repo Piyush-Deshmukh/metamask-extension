@@ -19,7 +19,10 @@ jest.mock('react-router-dom', () => {
 });
 
 jest.mock('../../../store/actions.ts', () => ({
-  detectNewTokens: jest.fn().mockReturnValue({ type: '' }),
+  detectNewTokens: jest.fn(),
+  showImportTokensPopover: jest
+    .fn()
+    .mockImplementation(() => ({ type: 'UI_IMPORT_TOKENS_POPOVER_OPEN' })),
 }));
 
 describe('Import Token Link', () => {
@@ -90,6 +93,6 @@ describe('Import Token Link', () => {
     const importToken = screen.getByTestId('import-token-button');
     fireEvent.click(importToken);
 
-    expect(mockPushHistory).toHaveBeenCalledWith('/import-token');
+    expect(screen.getByText('Import tokens')).toBeInTheDocument();
   });
 });
