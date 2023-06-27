@@ -38,11 +38,11 @@ import {
   Text,
   FormTextField,
   ButtonSecondary,
+  Box,
 } from '../../component-library';
 import TokenSearch from '../../app/import-token/token-search';
 import TokenList from '../../app/import-token/token-list';
 
-import Box from '../../ui/box/box';
 import {
   AlignItems,
   Display,
@@ -424,7 +424,7 @@ export const ImportTokensPopover = ({ onClose }) => {
       className="import-tokens-popover"
     >
       {isConfirming ? (
-        <Box padding={[0, 6, 6, 6]}>
+         <Box paddingTop={0} paddingRight={6} paddingBottom={6} paddingLeft={6}>
           <Text>{t('likeToImportTokens')}</Text>
           <Box marginTop={4} marginBottom={4}>
             <Box display={Display.Flex}>

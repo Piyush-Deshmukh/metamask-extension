@@ -24,9 +24,6 @@ export default {
       action: 'onClose',
     },
   },
-  args: {
-    closeMenu: () => console.log('Closing popover!'),
-  },
 };
 
 export const DefaultStory = (args) => <ImportTokensPopover {...args} />;
