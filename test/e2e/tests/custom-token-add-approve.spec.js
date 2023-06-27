@@ -52,11 +52,11 @@ describe('Create token, approve token and approve token without gas', function (
           tag: 'button',
         });
         await driver.fill(
-          '[data-testid="import-tokens-popover-custom-address"]',
+          '[data-testid="import-tokens-modal-custom-address"]',
           contractAddress,
         );
         await driver.waitForSelector(
-          '[data-testid="import-tokens-popover-custom-decimals"]',
+          '[data-testid="import-tokens-modal-custom-decimals"]',
         );
         await driver.delay(2000);
 
@@ -67,7 +67,7 @@ describe('Create token, approve token and approve token without gas', function (
 
         await driver.delay(2000);
         await driver.clickElement(
-          '[data-testid="import-tokens-popover-import-button"]',
+          '[data-testid="import-tokens-modal-import-button"]',
         );
 
         // renders balance for newly created token

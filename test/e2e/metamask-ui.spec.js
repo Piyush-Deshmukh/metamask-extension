@@ -258,7 +258,7 @@ describe('MetaMask', function () {
       await driver.delay(regularDelayMs);
 
       await driver.fill(
-        '[data-testid="import-tokens-popover-custom-address"]',
+        '[data-testid="import-tokens-modal-custom-address"]',
         tokenAddress,
       );
       await driver.delay(regularDelayMs);
@@ -267,7 +267,7 @@ describe('MetaMask', function () {
       await driver.delay(regularDelayMs);
 
       await driver.clickElement(
-        '[data-testid="import-tokens-popover-import-button"]',
+        '[data-testid="import-tokens-modal-import-button"]',
       );
       await driver.delay(regularDelayMs);
     });

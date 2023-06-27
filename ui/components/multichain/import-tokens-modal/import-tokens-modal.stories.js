@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import configureStore from '../../../store/store';
 import testData from '../../../../.storybook/test-data';
 import { CHAIN_IDS } from '../../../../shared/constants/network';
-import { ImportTokensPopover } from './import-tokens-popover';
+import { ImportTokensModal } from './import-tokens-modal';
 
 const createStore = (chainId = CHAIN_IDS.MAINNET, useTokenDetection = true) => {
   return configureStore({
@@ -17,8 +17,8 @@ const createStore = (chainId = CHAIN_IDS.MAINNET, useTokenDetection = true) => {
 };
 
 export default {
-  title: 'Components/Multichain/ImportTokensPopover',
-  component: ImportTokensPopover,
+  title: 'Components/Multichain/ImportTokensModal',
+  component: ImportTokensModal,
   argTypes: {
     onClose: {
       action: 'onClose',
@@ -26,7 +26,7 @@ export default {
   },
 };
 
-export const DefaultStory = (args) => <ImportTokensPopover {...args} />;
+export const DefaultStory = (args) => <ImportTokensModal {...args} />;
 DefaultStory.decorators = [
   (Story) => (
     <Provider store={createStore()}>
@@ -37,9 +37,7 @@ DefaultStory.decorators = [
 
 DefaultStory.storyName = 'Default';
 
-export const CustomImportOnlyStory = (args) => (
-  <ImportTokensPopover {...args} />
-);
+export const CustomImportOnlyStory = (args) => <ImportTokensModal {...args} />;
 CustomImportOnlyStory.decorators = [
   (Story) => (
     <Provider store={createStore(CHAIN_IDS.GOERLI)}>
@@ -51,7 +49,7 @@ CustomImportOnlyStory.decorators = [
 CustomImportOnlyStory.storyName = 'Custom Import Only';
 
 export const TokenDetectionDisabledStory = (args) => (
-  <ImportTokensPopover {...args} />
+  <ImportTokensModal {...args} />
 );
 TokenDetectionDisabledStory.decorators = [
   (Story) => (

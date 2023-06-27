@@ -31,17 +31,17 @@ describe('Token Details', function () {
         const tokenSymbol = 'AAVE';
 
         await driver.fill(
-          '[data-testid="import-tokens-popover-custom-address"]',
+          '[data-testid="import-tokens-modal-custom-address"]',
           tokenAddress,
         );
         await driver.waitForSelector('p.box--color-error-default');
         await driver.fill(
-          '[data-testid="import-tokens-popover-custom-symbol"]',
+          '[data-testid="import-tokens-modal-custom-symbol"]',
           tokenSymbol,
         );
         await driver.clickElement({ text: 'Next', tag: 'button' });
         await driver.clickElement(
-          '[data-testid="import-tokens-popover-import-button"]',
+          '[data-testid="import-tokens-modal-import-button"]',
         );
         await driver.clickElement('[aria-label="Asset options"]');
         await driver.clickElement({ text: 'Token details', tag: 'div' });

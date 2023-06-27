@@ -115,7 +115,7 @@ describe('Add existing token using search', function () {
         });
         await driver.clickElement({ text: 'Next', tag: 'button' });
         await driver.clickElement(
-          '[data-testid="import-tokens-popover-import-button"]',
+          '[data-testid="import-tokens-modal-import-button"]',
         );
 
         await driver.waitForSelector({

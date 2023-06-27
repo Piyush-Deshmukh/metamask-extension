@@ -2400,13 +2400,13 @@ export function hideNetworkDropdown() {
   };
 }
 
-export function showImportTokensPopover(): Action {
+export function showImportTokensModal(): Action {
   return {
     type: actionConstants.IMPORT_TOKENS_POPOVER_OPEN,
   };
 }
 
-export function hideImportTokensPopover(): Action {
+export function hideImportTokensModal(): Action {
   return {
     type: actionConstants.IMPORT_TOKENS_POPOVER_CLOSE,
   };

@@ -18,4 +18,4 @@ export { CreateAccount } from './create-account';
 export { ImportAccount } from './import-account';
 export { ImportNftsModal } from './import-nfts-modal';
 export { AccountDetailsMenuItem, ViewExplorerMenuItem } from './menu-items';
-export { ImportTokensPopover } from './import-tokens-popover';
+export { ImportTokensModal } from './import-tokens-modal';

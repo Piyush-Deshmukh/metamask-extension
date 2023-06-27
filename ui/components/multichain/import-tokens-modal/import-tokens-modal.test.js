@@ -10,7 +10,7 @@ import {
 } from '../../../store/actions';
 import mockState from '../../../../test/data/mock-state.json';
 import { TokenStandard } from '../../../../shared/constants/transaction';
-import { ImportTokensPopover } from '.';
+import { ImportTokensModal } from '.';
 
 jest.mock('../../../store/actions', () => ({
   getTokenStandardAndDetails: jest
@@ -24,7 +24,7 @@ jest.mock('../../../store/actions', () => ({
     .mockImplementation(() => ({ type: 'CLEAR_PENDING_TOKENS' })),
 }));
 
-describe('ImportTokensPopover', () => {
+describe('ImportTokensModal', () => {
   const render = (metamaskStateChanges = {}, onClose = jest.fn()) => {
     const store = configureStore({
       ...mockState,
@@ -33,7 +33,7 @@ describe('ImportTokensPopover', () => {
         ...metamaskStateChanges,
       },
     });
-    return renderWithProvider(<ImportTokensPopover onClose={onClose} />, store);
+    return renderWithProvider(<ImportTokensModal onClose={onClose} />, store);
   };
 
   describe('Search', () => {
@@ -70,12 +70,12 @@ describe('ImportTokensPopover', () => {
       const tokenAddress = '0x617b3f8050a0BD94b6b1da02B4384eE5B4DF13F4';
       const event = { target: { value: tokenAddress } };
       fireEvent.change(
-        getByTestId('import-tokens-popover-custom-address'),
+        getByTestId('import-tokens-modal-custom-address'),
         event,
       );
 
       expect(
-        getByTestId('import-tokens-popover-custom-address').value,
+        getByTestId('import-tokens-modal-custom-address').value,
       ).toStrictEqual(tokenAddress);
     });
 
@@ -86,13 +86,10 @@ describe('ImportTokensPopover', () => {
 
       const tokenSymbol = 'META';
       const event = { target: { value: tokenSymbol } };
-      fireEvent.change(
-        getByTestId('import-tokens-popover-custom-symbol'),
-        event,
-      );
+      fireEvent.change(getByTestId('import-tokens-modal-custom-symbol'), event);
 
       expect(
-        getByTestId('import-tokens-popover-custom-symbol').value,
+        getByTestId('import-tokens-modal-custom-symbol').value,
       ).toStrictEqual(tokenSymbol);
     });
 
@@ -104,12 +101,12 @@ describe('ImportTokensPopover', () => {
       const tokenPrecision = '2';
       const event = { target: { value: tokenPrecision } };
       fireEvent.change(
-        getByTestId('import-tokens-popover-custom-decimals'),
+        getByTestId('import-tokens-modal-custom-decimals'),
         event,
       );
 
       expect(
-        getByTestId('import-tokens-popover-custom-decimals').value,
+        getByTestId('import-tokens-modal-custom-decimals').value,
       ).toStrictEqual(tokenPrecision);
     });
 
@@ -122,7 +119,7 @@ describe('ImportTokensPopover', () => {
 
       const tokenAddress = '0x617b3f8050a0BD94b6b1da02B4384eE5B4DF13F4';
       await fireEvent.change(
-        getByTestId('import-tokens-popover-custom-address'),
+        getByTestId('import-tokens-modal-custom-address'),
         {
           target: { value: tokenAddress },
         },
@@ -131,17 +128,17 @@ describe('ImportTokensPopover', () => {
 
       const tokenSymbol = 'META';
 
-      fireEvent.change(getByTestId('import-tokens-popover-custom-symbol'), {
+      fireEvent.change(getByTestId('import-tokens-modal-custom-symbol'), {
         target: { value: tokenSymbol },
       });
 
-      expect(getByTestId('import-tokens-popover-custom-symbol').value).toBe(
+      expect(getByTestId('import-tokens-modal-custom-symbol').value).toBe(
         'META',
       );
 
       const tokenPrecision = '2';
 
-      fireEvent.change(getByTestId('import-tokens-popover-custom-decimals'), {
+      fireEvent.change(getByTestId('import-tokens-modal-custom-decimals'), {
         target: { value: tokenPrecision },
       });
 
@@ -187,7 +184,7 @@ describe('ImportTokensPopover', () => {
 
       const tokenAddress = '0x617b3f8050a0BD94b6b1da02B4384eE5B4DF13F4';
       await fireEvent.change(
-        getByTestId('import-tokens-popover-custom-address'),
+        getByTestId('import-tokens-modal-custom-address'),
         {
           target: { value: tokenAddress },
         },

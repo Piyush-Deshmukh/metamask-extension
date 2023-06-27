@@ -84,7 +84,7 @@ import {
 import Identicon from '../../ui/identicon';
 import TokenBalance from '../../ui/token-balance/token-balance';
 
-export const ImportTokensPopover = ({ onClose }) => {
+export const ImportTokensModal = ({ onClose }) => {
   const t = useI18nContext();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -368,7 +368,7 @@ export const ImportTokensPopover = ({ onClose }) => {
         setNftAddressError(
           t('nftAddressError', [
             <ButtonLink
-              className="import-tokens-popover__nft-address-error-link"
+              className="import-tokens-modal__nft-address-error-link"
               onClick={() =>
                 history.push({
                   pathname: ADD_NFT_ROUTE,
@@ -422,7 +422,7 @@ export const ImportTokensPopover = ({ onClose }) => {
         dispatch(clearPendingTokens());
         onClose();
       }}
-      className="import-tokens-popover"
+      className="import-tokens-modal"
     >
       <ModalOverlay />
       <ModalContent>
@@ -447,20 +447,20 @@ export const ImportTokensPopover = ({ onClose }) => {
               <Box display={Display.Flex}>
                 <Text
                   variant={TextVariant.bodySm}
-                  className="import-tokens-popover__token-name"
+                  className="import-tokens-modal__token-name"
                 >
                   {t('token')}
                 </Text>
                 <Text
                   variant={TextVariant.bodySm}
-                  className="import-tokens-popover__token-balance"
+                  className="import-tokens-modal__token-balance"
                 >
                   {t('balance')}
                 </Text>
               </Box>
               <Box
                 display={Display.Flex}
-                className="import-tokens-popover__confirm-token-list"
+                className="import-tokens-modal__confirm-token-list"
               >
                 {Object.entries(pendingTokens).map(([address, token]) => {
                   const { name, symbol } = token;
@@ -469,12 +469,12 @@ export const ImportTokensPopover = ({ onClose }) => {
                       key={address}
                       marginBottom={4}
                       display={Display.Flex}
-                      className="import-tokens-popover__confirm-token-list-item"
+                      className="import-tokens-modal__confirm-token-list-item"
                     >
                       <Box
                         display={Display.Flex}
                         alignItems={AlignItems.center}
-                        className="import-tokens-popover__confirm-token-list-item-wrapper"
+                        className="import-tokens-modal__confirm-token-list-item-wrapper"
                       >
                         <Identicon diameter={36} address={address} />
                         <Box marginInlineStart={4}>
@@ -488,7 +488,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                         </Box>
                       </Box>
                       <Box
-                        className="import-tokens-popover__token-balance"
+                        className="import-tokens-modal__token-balance"
                         alignItems={AlignItems.flexStart}
                       >
                         <TokenBalance token={token} />
@@ -513,7 +513,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                     onClose();
                   }}
                   block
-                  data-testid="import-tokens-popover-import-button"
+                  data-testid="import-tokens-modal-import-button"
                 >
                   {t('import')}
                 </ButtonPrimary>
@@ -553,7 +553,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                     />
                     <Box
                       marginTop={4}
-                      className="import-tokens-popover__search-list"
+                      className="import-tokens-modal__search-list"
                     >
                       <TokenList
                         results={searchResults}
@@ -567,7 +567,7 @@ export const ImportTokensPopover = ({ onClose }) => {
               <Tab tabKey="customToken" name={t('customToken')}>
                 <Box
                   padding={[2, 4, 4, 4]}
-                  className="import-tokens-popover__custom-token-form"
+                  className="import-tokens-modal__custom-token-form"
                 >
                   {tokenDetectionInactiveOnNonMainnetSupportedNetwork ? (
                     <BannerAlert severity={Severity.Warning}>
@@ -633,7 +633,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                     autoFocus
                     marginTop={6}
                     inputProps={{
-                      'data-testid': 'import-tokens-popover-custom-address',
+                      'data-testid': 'import-tokens-modal-custom-address',
                     }}
                   />
                   <FormTextField
@@ -660,7 +660,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                     disabled={symbolAutoFilled && !forceEditSymbol}
                     marginTop={6}
                     inputProps={{
-                      'data-testid': 'import-tokens-popover-custom-symbol',
+                      'data-testid': 'import-tokens-modal-custom-symbol',
                     }}
                   />
                   <FormTextField
@@ -675,7 +675,7 @@ export const ImportTokensPopover = ({ onClose }) => {
                     max={MAX_DECIMAL_VALUE}
                     marginTop={6}
                     inputProps={{
-                      'data-testid': 'import-tokens-popover-custom-decimals',
+                      'data-testid': 'import-tokens-modal-custom-decimals',
                     }}
                   />
                   {customDecimals === '' && (
@@ -714,6 +714,6 @@ export const ImportTokensPopover = ({ onClose }) => {
   );
 };
 
-ImportTokensPopover.propTypes = {
+ImportTokensModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
