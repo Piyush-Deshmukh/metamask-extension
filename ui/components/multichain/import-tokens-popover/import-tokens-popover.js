@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getTokenTrackerLink } from '@metamask/etherscan-link/dist/token-tracker-link';
-import Popover from '../../ui/popover/popover.component';
 import { Tab, Tabs } from '../../ui/tabs';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
@@ -39,6 +38,10 @@ import {
   FormTextField,
   ButtonSecondary,
   Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
 } from '../../component-library';
 import TokenSearch from '../../app/import-token/token-search';
 import TokenList from '../../app/import-token/token-list';
@@ -413,282 +416,301 @@ export const ImportTokensPopover = ({ onClose }) => {
   const isConfirming = mode === 'confirm';
 
   return (
-    <Popover
-      onBack={isConfirming ? () => setMode('') : null}
+    <Modal
+      isOpen
       onClose={() => {
         dispatch(clearPendingTokens());
         onClose();
       }}
-      centerTitle
-      title={t('importTokensCamelCase')}
       className="import-tokens-popover"
     >
-      {isConfirming ? (
-         <Box paddingTop={0} paddingRight={6} paddingBottom={6} paddingLeft={6}>
-          <Text>{t('likeToImportTokens')}</Text>
-          <Box marginTop={4} marginBottom={4}>
-            <Box display={Display.Flex}>
-              <Text
-                variant={TextVariant.bodySm}
-                className="import-tokens-popover__token-name"
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader
+          onBack={isConfirming ? () => setMode('') : null}
+          onClose={() => {
+            dispatch(clearPendingTokens());
+            onClose();
+          }}
+        >
+          {t('importTokensCamelCase')}
+        </ModalHeader>
+        {isConfirming ? (
+          <Box
+            paddingTop={0}
+            paddingRight={6}
+            paddingBottom={6}
+            paddingLeft={6}
+          >
+            <Text>{t('likeToImportTokens')}</Text>
+            <Box marginTop={4} marginBottom={4}>
+              <Box display={Display.Flex}>
+                <Text
+                  variant={TextVariant.bodySm}
+                  className="import-tokens-popover__token-name"
+                >
+                  {t('token')}
+                </Text>
+                <Text
+                  variant={TextVariant.bodySm}
+                  className="import-tokens-popover__token-balance"
+                >
+                  {t('balance')}
+                </Text>
+              </Box>
+              <Box
+                display={Display.Flex}
+                className="import-tokens-popover__confirm-token-list"
               >
-                {t('token')}
-              </Text>
-              <Text
-                variant={TextVariant.bodySm}
-                className="import-tokens-popover__token-balance"
-              >
-                {t('balance')}
-              </Text>
-            </Box>
-            <Box
-              display={Display.Flex}
-              className="import-tokens-popover__confirm-token-list"
-            >
-              {Object.entries(pendingTokens).map(([address, token]) => {
-                const { name, symbol } = token;
-                return (
-                  <Box
-                    key={address}
-                    marginBottom={4}
-                    display={Display.Flex}
-                    className="import-tokens-popover__confirm-token-list-item"
-                  >
+                {Object.entries(pendingTokens).map(([address, token]) => {
+                  const { name, symbol } = token;
+                  return (
                     <Box
+                      key={address}
+                      marginBottom={4}
                       display={Display.Flex}
-                      alignItems={AlignItems.center}
-                      className="import-tokens-popover__confirm-token-list-item-wrapper"
+                      className="import-tokens-popover__confirm-token-list-item"
                     >
-                      <Identicon diameter={36} address={address} />
-                      <Box marginInlineStart={4}>
-                        <Text>{name}</Text>
-                        <Text
-                          variant={TextVariant.bodySm}
-                          color={TextColor.textAlternative}
-                        >
-                          {symbol}
-                        </Text>
+                      <Box
+                        display={Display.Flex}
+                        alignItems={AlignItems.center}
+                        className="import-tokens-popover__confirm-token-list-item-wrapper"
+                      >
+                        <Identicon diameter={36} address={address} />
+                        <Box marginInlineStart={4}>
+                          <Text>{name}</Text>
+                          <Text
+                            variant={TextVariant.bodySm}
+                            color={TextColor.textAlternative}
+                          >
+                            {symbol}
+                          </Text>
+                        </Box>
+                      </Box>
+                      <Box
+                        className="import-tokens-popover__token-balance"
+                        alignItems={AlignItems.flexStart}
+                      >
+                        <TokenBalance token={token} />
                       </Box>
                     </Box>
-                    <Box
-                      className="import-tokens-popover__token-balance"
-                      alignItems={AlignItems.flexStart}
-                    >
-                      <TokenBalance token={token} />
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-            <Box display={Display.Flex} gap={2} marginTop={4}>
-              <ButtonSecondary
-                onClick={() => {
-                  dispatch(clearPendingTokens());
-                  setMode('');
-                }}
-                block
-              >
-                {t('back')}
-              </ButtonSecondary>
-              <ButtonPrimary
-                onClick={async () => {
-                  await handleAddTokens();
-                  onClose();
-                }}
-                block
-                data-testid="import-tokens-popover-import-button"
-              >
-                {t('import')}
-              </ButtonPrimary>
+                  );
+                })}
+              </Box>
+              <Box display={Display.Flex} gap={2} marginTop={4}>
+                <ButtonSecondary
+                  onClick={() => {
+                    dispatch(clearPendingTokens());
+                    setMode('');
+                  }}
+                  block
+                >
+                  {t('back')}
+                </ButtonSecondary>
+                <ButtonPrimary
+                  onClick={async () => {
+                    await handleAddTokens();
+                    onClose();
+                  }}
+                  block
+                  data-testid="import-tokens-popover-import-button"
+                >
+                  {t('import')}
+                </ButtonPrimary>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      ) : (
-        <>
-          <Tabs t={t}>
-            {showSearchTab ? (
-              <Tab tabKey="search" name={t('search')}>
-                <Box padding={4}>
-                  {useTokenDetection ? null : (
-                    <BannerAlert severity={Severity.Info} marginBottom={4}>
-                      <Text>
-                        {t('enhancedTokenDetectionAlertMessage', [
-                          networkName,
-                          <ButtonLink
-                            key="token-detection-announcement"
-                            onClick={() => {
-                              history.push(
-                                `${SECURITY_ROUTE}#token-description`,
-                              );
-                              onClose();
-                            }}
-                          >
-                            {t('enableFromSettings')}
-                          </ButtonLink>,
-                        ])}
-                      </Text>
-                    </BannerAlert>
-                  )}
-                  <TokenSearch
-                    onSearch={({ results = [] }) => setSearchResults(results)}
-                    error={tokenSelectorError}
-                    tokenList={tokenList}
-                  />
-                  <Box
-                    marginTop={4}
-                    className="import-tokens-popover__search-list"
-                  >
-                    <TokenList
-                      results={searchResults}
-                      selectedTokens={selectedTokens}
-                      onToggleToken={(token) => handleToggleToken(token)}
+        ) : (
+          <>
+            <Tabs t={t}>
+              {showSearchTab ? (
+                <Tab tabKey="search" name={t('search')}>
+                  <Box padding={4}>
+                    {useTokenDetection ? null : (
+                      <BannerAlert severity={Severity.Info} marginBottom={4}>
+                        <Text>
+                          {t('enhancedTokenDetectionAlertMessage', [
+                            networkName,
+                            <ButtonLink
+                              key="token-detection-announcement"
+                              onClick={() => {
+                                history.push(
+                                  `${SECURITY_ROUTE}#token-description`,
+                                );
+                                onClose();
+                              }}
+                            >
+                              {t('enableFromSettings')}
+                            </ButtonLink>,
+                          ])}
+                        </Text>
+                      </BannerAlert>
+                    )}
+                    <TokenSearch
+                      onSearch={({ results = [] }) => setSearchResults(results)}
+                      error={tokenSelectorError}
+                      tokenList={tokenList}
                     />
+                    <Box
+                      marginTop={4}
+                      className="import-tokens-popover__search-list"
+                    >
+                      <TokenList
+                        results={searchResults}
+                        selectedTokens={selectedTokens}
+                        onToggleToken={(token) => handleToggleToken(token)}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              </Tab>
-            ) : null}
-            <Tab tabKey="customToken" name={t('customToken')}>
-              <Box
-                padding={[2, 4, 4, 4]}
-                className="import-tokens-popover__custom-token-form"
-              >
-                {tokenDetectionInactiveOnNonMainnetSupportedNetwork ? (
-                  <BannerAlert severity={Severity.Warning}>
-                    {t('customTokenWarningInTokenDetectionNetworkWithTDOFF', [
-                      <ButtonLink
-                        key="import-token-security-risk"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href={ZENDESK_URLS.TOKEN_SAFETY_PRACTICES}
-                      >
-                        {t('tokenScamSecurityRisk')}
-                      </ButtonLink>,
-                      <ButtonLink
-                        type="link"
-                        key="import-token-token-detection-announcement"
-                        onClick={() =>
-                          history.push(`${SECURITY_ROUTE}#token-description`)
-                        }
-                      >
-                        {t('inYourSettings')}
-                      </ButtonLink>,
-                    ])}
-                  </BannerAlert>
-                ) : (
-                  <BannerAlert
-                    severity={
-                      isDynamicTokenListAvailable
-                        ? Severity.Warning
-                        : Severity.Info
-                    }
-                  >
-                    {t(
-                      isDynamicTokenListAvailable
-                        ? 'customTokenWarningInTokenDetectionNetwork'
-                        : 'customTokenWarningInNonTokenDetectionNetwork',
-                      [
+                </Tab>
+              ) : null}
+              <Tab tabKey="customToken" name={t('customToken')}>
+                <Box
+                  padding={[2, 4, 4, 4]}
+                  className="import-tokens-popover__custom-token-form"
+                >
+                  {tokenDetectionInactiveOnNonMainnetSupportedNetwork ? (
+                    <BannerAlert severity={Severity.Warning}>
+                      {t('customTokenWarningInTokenDetectionNetworkWithTDOFF', [
                         <ButtonLink
-                          key="import-token-fake-token-warning"
+                          key="import-token-security-risk"
                           rel="noopener noreferrer"
                           target="_blank"
                           href={ZENDESK_URLS.TOKEN_SAFETY_PRACTICES}
                         >
-                          {t('learnScamRisk')}
+                          {t('tokenScamSecurityRisk')}
                         </ButtonLink>,
-                      ],
-                    )}
-                  </BannerAlert>
-                )}
-                <FormTextField
-                  label={t('tokenContractAddress')}
-                  value={customAddress}
-                  onChange={(e) => handleCustomAddressChange(e.target.value)}
-                  helpText={
-                    customAddressError || mainnetTokenWarning || nftAddressError
-                  }
-                  error={
-                    customAddressError || mainnetTokenWarning || nftAddressError
-                  }
-                  autoFocus
-                  marginTop={6}
-                  inputProps={{
-                    'data-testid': 'import-tokens-popover-custom-address',
-                  }}
-                />
-                <FormTextField
-                  label={
-                    <>
-                      {t('tokenSymbol')}
-                      {symbolAutoFilled && !forceEditSymbol && (
                         <ButtonLink
-                          onClick={() => setForceEditSymbol(true)}
-                          textAlign={TextAlign.End}
-                          paddingInlineEnd={1}
-                          paddingInlineStart={1}
-                          color={TextColor.primaryDefault}
+                          type="link"
+                          key="import-token-token-detection-announcement"
+                          onClick={() =>
+                            history.push(`${SECURITY_ROUTE}#token-description`)
+                          }
                         >
-                          {t('edit')}
-                        </ButtonLink>
+                          {t('inYourSettings')}
+                        </ButtonLink>,
+                      ])}
+                    </BannerAlert>
+                  ) : (
+                    <BannerAlert
+                      severity={
+                        isDynamicTokenListAvailable
+                          ? Severity.Warning
+                          : Severity.Info
+                      }
+                    >
+                      {t(
+                        isDynamicTokenListAvailable
+                          ? 'customTokenWarningInTokenDetectionNetwork'
+                          : 'customTokenWarningInNonTokenDetectionNetwork',
+                        [
+                          <ButtonLink
+                            key="import-token-fake-token-warning"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            href={ZENDESK_URLS.TOKEN_SAFETY_PRACTICES}
+                          >
+                            {t('learnScamRisk')}
+                          </ButtonLink>,
+                        ],
                       )}
-                    </>
-                  }
-                  value={customSymbol}
-                  onChange={(e) => handleCustomSymbolChange(e.target.value)}
-                  helpText={customSymbolError}
-                  error={customSymbolError}
-                  disabled={symbolAutoFilled && !forceEditSymbol}
-                  marginTop={6}
-                  inputProps={{
-                    'data-testid': 'import-tokens-popover-custom-symbol',
-                  }}
-                />
-                <FormTextField
-                  label={t('decimal')}
-                  type="number"
-                  value={customDecimals}
-                  onChange={(e) => handleCustomDecimalsChange(e.target.value)}
-                  helpText={customDecimalsError}
-                  error={customDecimalsError}
-                  disabled={decimalAutoFilled}
-                  min={MIN_DECIMAL_VALUE}
-                  max={MAX_DECIMAL_VALUE}
-                  marginTop={6}
-                  inputProps={{
-                    'data-testid': 'import-tokens-popover-custom-decimals',
-                  }}
-                />
-                {customDecimals === '' && (
-                  <BannerAlert severity={Severity.Warning}>
-                    <Text fontWeight={FontWeight.Bold}>
-                      {t('tokenDecimalFetchFailed')}
-                    </Text>
-                    {t('verifyThisTokenDecimalOn', [
-                      <ButtonLink
-                        key="import-token-verify-token-decimal"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href={blockExplorerTokenLink}
-                      >
-                        {blockExplorerLabel}
-                      </ButtonLink>,
-                    ])}
-                  </BannerAlert>
-                )}
-              </Box>
-            </Tab>
-          </Tabs>
-          <Box padding={6}>
-            <ButtonPrimary
-              onClick={() => handleNext()}
-              disabled={Boolean(hasError()) || !hasSelected()}
-              block
-            >
-              {t('next')}
-            </ButtonPrimary>
-          </Box>
-        </>
-      )}
-    </Popover>
+                    </BannerAlert>
+                  )}
+                  <FormTextField
+                    label={t('tokenContractAddress')}
+                    value={customAddress}
+                    onChange={(e) => handleCustomAddressChange(e.target.value)}
+                    helpText={
+                      customAddressError ||
+                      mainnetTokenWarning ||
+                      nftAddressError
+                    }
+                    error={
+                      customAddressError ||
+                      mainnetTokenWarning ||
+                      nftAddressError
+                    }
+                    autoFocus
+                    marginTop={6}
+                    inputProps={{
+                      'data-testid': 'import-tokens-popover-custom-address',
+                    }}
+                  />
+                  <FormTextField
+                    label={
+                      <>
+                        {t('tokenSymbol')}
+                        {symbolAutoFilled && !forceEditSymbol && (
+                          <ButtonLink
+                            onClick={() => setForceEditSymbol(true)}
+                            textAlign={TextAlign.End}
+                            paddingInlineEnd={1}
+                            paddingInlineStart={1}
+                            color={TextColor.primaryDefault}
+                          >
+                            {t('edit')}
+                          </ButtonLink>
+                        )}
+                      </>
+                    }
+                    value={customSymbol}
+                    onChange={(e) => handleCustomSymbolChange(e.target.value)}
+                    helpText={customSymbolError}
+                    error={customSymbolError}
+                    disabled={symbolAutoFilled && !forceEditSymbol}
+                    marginTop={6}
+                    inputProps={{
+                      'data-testid': 'import-tokens-popover-custom-symbol',
+                    }}
+                  />
+                  <FormTextField
+                    label={t('decimal')}
+                    type="number"
+                    value={customDecimals}
+                    onChange={(e) => handleCustomDecimalsChange(e.target.value)}
+                    helpText={customDecimalsError}
+                    error={customDecimalsError}
+                    disabled={decimalAutoFilled}
+                    min={MIN_DECIMAL_VALUE}
+                    max={MAX_DECIMAL_VALUE}
+                    marginTop={6}
+                    inputProps={{
+                      'data-testid': 'import-tokens-popover-custom-decimals',
+                    }}
+                  />
+                  {customDecimals === '' && (
+                    <BannerAlert severity={Severity.Warning}>
+                      <Text fontWeight={FontWeight.Bold}>
+                        {t('tokenDecimalFetchFailed')}
+                      </Text>
+                      {t('verifyThisTokenDecimalOn', [
+                        <ButtonLink
+                          key="import-token-verify-token-decimal"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          href={blockExplorerTokenLink}
+                        >
+                          {blockExplorerLabel}
+                        </ButtonLink>,
+                      ])}
+                    </BannerAlert>
+                  )}
+                </Box>
+              </Tab>
+            </Tabs>
+            <Box padding={6}>
+              <ButtonPrimary
+                onClick={() => handleNext()}
+                disabled={Boolean(hasError()) || !hasSelected()}
+                block
+              >
+                {t('next')}
+              </ButtonPrimary>
+            </Box>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 };
 
