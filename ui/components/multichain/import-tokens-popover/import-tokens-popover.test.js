@@ -165,9 +165,9 @@ describe('ImportTokensPopover', () => {
 
     it('cancels out of import token flow', () => {
       const onClose = jest.fn();
-      const { getByTestId } = render({}, onClose);
-      const closeButton = getByTestId('popover-close');
-      fireEvent.click(closeButton);
+      render({}, onClose);
+
+      fireEvent.click(document.querySelector('button[aria-label="Close"]'));
 
       expect(clearPendingTokens).toHaveBeenCalled();
       expect(onClose).toHaveBeenCalled();
