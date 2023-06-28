@@ -505,7 +505,7 @@ export default class Routes extends Component {
       isNetworkMenuOpen,
       toggleNetworkMenu,
       accountDetailsAddress,
-      isimportTokensModalOpen,
+      isImportTokensModalOpen,
       location,
       isImportNftsModalOpen,
       hideImportNftsModal,
@@ -576,7 +576,7 @@ export default class Routes extends Component {
         {isIpfsModalOpen ? (
           <ToggleIpfsModal onClose={() => hideIpfsModal()} />
           ) : null}
-        {isimportTokensModalOpen ? (
+        {isImportTokensModalOpen ? (
           <ImportTokensModal onClose={() => hideImportTokensModal()} />
         ) : null}
         <Box className="main-container-wrapper">
