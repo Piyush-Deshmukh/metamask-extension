@@ -513,6 +513,7 @@ export default class Routes extends Component {
       hideIpfsModal,
       hideImportTokensModal,
     } = this.props;
+
     const loadMessage =
       loadingMessage || isNetworkLoading
         ? this.getConnectingLabel(loadingMessage)
