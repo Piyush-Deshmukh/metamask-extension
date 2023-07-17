@@ -160,7 +160,7 @@ export default class Routes extends Component {
     hideImportNftsModal: PropTypes.func.isRequired,
     isIpfsModalOpen: PropTypes.bool.isRequired,
     hideIpfsModal: PropTypes.func.isRequired,
-    isimportTokensModalOpen: PropTypes.bool.isRequired,
+    isImportTokensModalOpen: PropTypes.bool.isRequired,
     hideImportTokensModal: PropTypes.func.isRequired,
   };
 
@@ -576,7 +576,7 @@ export default class Routes extends Component {
         ) : null}
         {isIpfsModalOpen ? (
           <ToggleIpfsModal onClose={() => hideIpfsModal()} />
-          ) : null}
+        ) : null}
         {isImportTokensModalOpen ? (
           <ImportTokensModal onClose={() => hideImportTokensModal()} />
         ) : null}
