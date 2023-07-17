@@ -29,6 +29,7 @@ import {
   clearPendingTokens,
   getTokenStandardAndDetails,
   setPendingTokens,
+  showImportNftsModal,
 } from '../../../store/actions';
 import {
   BannerAlert,
@@ -52,11 +53,7 @@ import {
   TextColor,
 } from '../../../helpers/constants/design-system';
 
-import {
-  ADD_NFT_ROUTE,
-  ASSET_ROUTE,
-  SECURITY_ROUTE,
-} from '../../../helpers/constants/routes';
+import { ASSET_ROUTE, SECURITY_ROUTE } from '../../../helpers/constants/routes';
 import ZENDESK_URLS from '../../../helpers/constants/zendesk-url';
 import { isValidHexAddress } from '../../../../shared/modules/hexstring-utils';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
@@ -364,14 +361,10 @@ export const ImportTokensModal = ({ onClose }) => {
           t('nftAddressError', [
             <ButtonLink
               className="import-tokens-modal__nft-address-error-link"
-              onClick={() =>
-                history.push({
-                  pathname: ADD_NFT_ROUTE,
-                  state: {
-                    addressEnteredOnImportTokensPage: customAddress,
-                  },
-                })
-              }
+              onClick={() => {
+                dispatch(showImportNftsModal());
+                onClose();
+              }}
               color={TextColor.primaryDefault}
               key="nftAddressError"
             >
