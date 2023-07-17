@@ -19,7 +19,9 @@ jest.mock('react-router-dom', () => {
 });
 
 jest.mock('../../../store/actions.ts', () => ({
-  detectNewTokens: jest.fn(),
+  detectNewTokens: jest
+    .fn()
+    .mockImplementation(() => ({ type: 'DETECT_TOKENS' })),
   showImportTokensModal: jest
     .fn()
     .mockImplementation(() => ({ type: 'UI_IMPORT_TOKENS_POPOVER_OPEN' })),
