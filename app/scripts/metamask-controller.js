@@ -4042,7 +4042,6 @@ export default class MetamaskController extends EventEmitter {
     // setup json rpc engine stack
     const engine = new JsonRpcEngine();
 
-
     // set chainid for domain if not exist
     if (
       this.selectedNetworkController.getChainForDomain(origin) === undefined
@@ -4066,6 +4065,7 @@ export default class MetamaskController extends EventEmitter {
 
     const chainIdForRequest =
       this.selectedNetworkController.getChainForDomain(origin);
+
     console.log('chainIdForRequest', chainIdForRequest);
     console.log(
       'getNetworkClientsById',
@@ -4083,13 +4083,6 @@ export default class MetamaskController extends EventEmitter {
 
     const networkClient =
       this.selectedNetworkController.getClientForDomain(origin);
-
-    console.log(
-      'chainForDomain',
-      origin,
-      'is ',
-      this.selectedNetworkController.getChainForDomain(origin),
-    );
 
     // append origin to each request
     engine.push(createOriginMiddleware({ origin }));
@@ -4148,12 +4141,7 @@ export default class MetamaskController extends EventEmitter {
         }),
       );
     }
-    engine.push(
-      createAsyncMiddleware(async (req, res, next) => {
-       console.log('LAST IN MIDDLEWARE2', req, networkClient.configuration, networkClient);
-       next();
-      }),
-    );
+
     // Unrestricted/permissionless RPC method implementations
     engine.push(
       createMethodMiddleware({
