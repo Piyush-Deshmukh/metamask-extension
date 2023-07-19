@@ -10,6 +10,7 @@ import {
   setUsePhishDetect,
   setUseTokenDetection,
   setUseAddressBarEnsResolution,
+  setUse4ByteResolution,
 } from '../../../store/actions';
 import SecurityTab from './security-tab.component';
 
@@ -27,6 +28,7 @@ const mapStateToProps = (state) => {
     useMultiAccountBalanceChecker,
     useCurrencyRateCheck,
     useAddressBarEnsResolution,
+    use4ByteResolution,
   } = metamask;
 
   return {
@@ -39,6 +41,7 @@ const mapStateToProps = (state) => {
     useMultiAccountBalanceChecker,
     useCurrencyRateCheck,
     useAddressBarEnsResolution,
+    use4ByteResolution,
   };
 };
 
@@ -61,6 +64,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUseAddressBarEnsResolution: (value) =>
       dispatch(setUseAddressBarEnsResolution(value)),
+    setUse4ByteResolution: (value) => {
+      return dispatch(setUse4ByteResolution(value));
+    },
   };
 };
 
