@@ -34,7 +34,7 @@ describe('Token Details', function () {
           '[data-testid="import-tokens-modal-custom-address"]',
           tokenAddress,
         );
-        await driver.waitForSelector('p.box--color-error-default');
+        await driver.waitForSelector('p.mm-box--color-error-default');
         await driver.fill(
           '[data-testid="import-tokens-modal-custom-symbol"]',
           tokenSymbol,
