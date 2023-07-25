@@ -1209,7 +1209,10 @@ export default class MetamaskController extends EventEmitter {
       getAccountType: this.getAccountType.bind(this),
       getDeviceModel: this.getDeviceModel.bind(this),
       getTokenStandardAndDetails: this.getTokenStandardAndDetails.bind(this),
+      ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
       securityProviderRequest: this.securityProviderRequest.bind(this),
+      ///: END:ONLY_INCLUDE_IN
+
       ///: BEGIN:ONLY_INCLUDE_IN(build-mmi)
       transactionUpdateController: this.transactionUpdateController,
       ///: END:ONLY_INCLUDE_IN
@@ -2348,10 +2351,14 @@ export default class MetamaskController extends EventEmitter {
         preferencesController,
       ),
       setTheme: preferencesController.setTheme.bind(preferencesController),
+
+      ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
       setTransactionSecurityCheckEnabled:
         preferencesController.setTransactionSecurityCheckEnabled.bind(
           preferencesController,
         ),
+      ///: END:ONLY_INCLUDE_IN
+
       ///: BEGIN:ONLY_INCLUDE_IN(keyring-snaps)
       setSnapsAddSnapAccountModalDismissed:
         preferencesController.setSnapsAddSnapAccountModalDismissed.bind(
@@ -4745,6 +4752,7 @@ export default class MetamaskController extends EventEmitter {
     }
   };
 
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   async securityProviderRequest(requestData, methodName) {
     const { currentLocale, transactionSecurityCheckEnabled } =
       this.preferencesController.store.getState();
@@ -4771,4 +4779,5 @@ export default class MetamaskController extends EventEmitter {
 
     return null;
   }
+  ///: END:ONLY_INCLUDE_IN
 }
