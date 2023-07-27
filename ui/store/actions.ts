@@ -2912,10 +2912,10 @@ export function toggleNetworkMenu() {
   };
 }
 
-export function setAccountDetailsAddress(address: string) {
+export function setAccountDetailsAccountId(accountId: string) {
   return {
-    type: actionConstants.SET_ACCOUNT_DETAILS_ADDRESS,
-    payload: address,
+    type: actionConstants.SET_ACCOUNT_DETAILS_ACCOUNT_ID,
+    payload: accountId,
   };
 }
 
@@ -2940,12 +2940,6 @@ export function setParticipateInMetaMetrics(
             reject(err);
             return;
           }
-          /**
-           * We need to inform sentry that the user's optin preference may have
-           * changed. The logic to determine which way to toggle is in the
-           * toggleSession handler in setupSentry.js.
-           */
-          window.sentry?.toggleSession();
 
           dispatch({
             type: actionConstants.SET_PARTICIPATE_IN_METAMETRICS,

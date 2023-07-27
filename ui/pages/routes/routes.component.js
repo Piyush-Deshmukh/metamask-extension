@@ -156,7 +156,7 @@ export default class Routes extends Component {
     toggleAccountMenu: PropTypes.func,
     isNetworkMenuOpen: PropTypes.bool,
     toggleNetworkMenu: PropTypes.func,
-    accountDetailsAddress: PropTypes.string,
+    accountDetailsAccountId: PropTypes.string,
     isImportNftsModalOpen: PropTypes.bool.isRequired,
     hideImportNftsModal: PropTypes.func.isRequired,
   };
@@ -511,7 +511,7 @@ export default class Routes extends Component {
       toggleAccountMenu,
       isNetworkMenuOpen,
       toggleNetworkMenu,
-      accountDetailsAddress,
+      accountDetailsAccountId,
       location,
       isImportNftsModalOpen,
       hideImportNftsModal,
@@ -570,8 +570,8 @@ export default class Routes extends Component {
         {isNetworkMenuOpen ? (
           <NetworkListMenu onClose={() => toggleNetworkMenu()} />
         ) : null}
-        {accountDetailsAddress ? (
-          <AccountDetails address={accountDetailsAddress} />
+        {accountDetailsAccountId ? (
+          <AccountDetails accountId={accountDetailsAccountId} />
         ) : null}
         {isImportNftsModalOpen ? (
           <ImportNftsModal onClose={() => hideImportNftsModal()} />
