@@ -1383,8 +1383,10 @@ export function getIsDynamicTokenListAvailable(state) {
  */
 export function getDetectedTokensInCurrentNetwork(state) {
   const currentChainId = getCurrentChainId(state);
-  const selectedAddress = getSelectedAddress(state);
-  return state.metamask.allDetectedTokens?.[currentChainId]?.[selectedAddress];
+  const selectedAccount = getSelectedInternalAccount(state);
+  return state.metamask.allDetectedTokens?.[currentChainId]?.[
+    selectedAccount.address
+  ];
 }
 
 /**
