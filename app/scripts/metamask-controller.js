@@ -4781,6 +4781,6 @@ export default class MetamaskController extends EventEmitter {
       }
     }
     ///: END:ONLY_INCLUDE_IN
-    return null;
+    return undefined;
   }
 }
