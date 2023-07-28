@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
 import { isEqualCaseInsensitive } from '../../../../../shared/modules/string-utils';
 import { TextFieldSearch } from '../../../component-library';
+import { BlockSize } from '../../../../helpers/constants/design-system';
 
 export default class TokenSearch extends Component {
   static contextTypes = {
