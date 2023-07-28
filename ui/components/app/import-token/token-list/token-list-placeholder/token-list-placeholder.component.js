@@ -28,8 +28,7 @@ export default class TokenListPlaceholder extends Component {
         </Text>
         <ButtonLink
           href={ZENDESK_URLS.ADD_CUSTOM_TOKENS}
-          target="_blank"
-          rel="noopener noreferrer"
+          externalLink
         >
           {this.context.t('learnMoreUpperCase')}
         </ButtonLink>
