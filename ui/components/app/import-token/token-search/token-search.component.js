@@ -68,7 +68,7 @@ export default class TokenSearch extends Component {
         error={error}
         autoFocus
         autoComplete={false}
-        style={{ width: '100%' }}
+        width={BlockSize.Full}
       />
     );
   }

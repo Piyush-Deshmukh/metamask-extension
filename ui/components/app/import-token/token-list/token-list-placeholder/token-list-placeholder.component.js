@@ -26,10 +26,7 @@ export default class TokenListPlaceholder extends Component {
         <Text color={TextColor.textAlternative}>
           {this.context.t('addAcquiredTokens')}
         </Text>
-        <ButtonLink
-          href={ZENDESK_URLS.ADD_CUSTOM_TOKENS}
-          externalLink
-        >
+        <ButtonLink href={ZENDESK_URLS.ADD_CUSTOM_TOKENS} externalLink>
           {this.context.t('learnMoreUpperCase')}
         </ButtonLink>
       </Box>
