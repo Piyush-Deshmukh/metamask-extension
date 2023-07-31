@@ -914,9 +914,6 @@
   "deleteNetwork": {
     "message": "ネットワークを削除しますか?"
   },
-  "deleteNetworkDescription": {
-    "message": "このネットワークを削除しますか?"
-  },
   "deposit": {
     "message": "入金"
   },
