@@ -106,28 +106,36 @@
     "alertEnabledness": {
       "unconnectedAccount": true
     },
-    "featureFlags": {
-      "showIncomingTransactions": true
+    "featureFlags": {},
+    "incomingTransactionsPreferences": {
+      "0x1": true,
+      "0xe708": false,
+      "0x4e454152": false,
+      "0xa4b1": false,
+      "0x5": false,
+      "0xaa36a7": false,
+      "0xe704": true
     },
+    "useAddressBarEnsResolution": true,
     "networkId": "5",
     "networkStatus": "available",
     "providerConfig": {
       "type": "rpc",
-      "chainId": "0x5",
+      "chainId": "0x4e454152",
       "ticker": "ETH",
       "id": "chain5"
     },
     "networkConfigurations": {
       "testNetworkConfigurationId": {
         "rpcUrl": "https://testrpc.com",
-        "chainId": "0x1",
+        "chainId": "0xa4ec",
         "nickname": "Custom Mainnet RPC",
         "type": "rpc",
         "id": "testNetworkConfigurationId"
       },
       "chain5": {
         "type": "rpc",
-        "chainId": "0x5",
+        "chainId": "0xa4b1",
         "ticker": "ETH",
         "nickname": "Chain 5",
         "id": "chain5"

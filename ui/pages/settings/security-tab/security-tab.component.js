@@ -17,26 +17,31 @@ import {
   COINGECKO_LINK,
   CONSENSYS_PRIVACY_LINK,
   CRYPTOCOMPARE_LINK,
-  ETHERSCAN_PRIVACY_LINK,
   PRIVACY_POLICY_LINK,
 } from '../../../../shared/lib/ui-utils';
 import SRPQuiz from '../../../components/app/srp-quiz-modal/SRPQuiz';
 import {
   BUTTON_SIZES,
   Button,
-} from '../../../components/component-library/button';
+  Box,
+  Text,
+} from '../../../components/component-library';
 import TextField from '../../../components/ui/text-field';
 import ToggleButton from '../../../components/ui/toggle-button';
+import {
+  Display,
+  FlexDirection,
+  JustifyContent,
+  TextColor,
+  TextVariant,
+} from '../../../helpers/constants/design-system';
 import { ADD_POPULAR_CUSTOM_NETWORK } from '../../../helpers/constants/routes';
 import {
   getNumberOfSettingsInSection,
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
-import { Box, Text } from '../../../components/component-library';
-import {
-  TextColor,
-  TextVariant,
-} from '../../../helpers/constants/design-system';
+
+import IncomingTransactionToggle from '../../../components/app/incoming-trasaction-toggle';
 
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
@@ -49,8 +54,9 @@ export default class SecurityTab extends PureComponent {
     history: PropTypes.object,
     participateInMetaMetrics: PropTypes.bool.isRequired,
     setParticipateInMetaMetrics: PropTypes.func.isRequired,
-    showIncomingTransactions: PropTypes.bool.isRequired,
-    setShowIncomingTransactionsFeatureFlag: PropTypes.func.isRequired,
+    incomingTransactionsPreferences: PropTypes.object.isRequired,
+    allNetworks: PropTypes.array.isRequired,
+    setIncomingTransactionsPreferences: PropTypes.func.isRequired,
     setUsePhishDetect: PropTypes.func.isRequired,
     usePhishDetect: PropTypes.bool.isRequired,
     useTokenDetection: PropTypes.bool.isRequired,
@@ -160,53 +166,19 @@ export default class SecurityTab extends PureComponent {
   }
 
   renderIncomingTransactionsOptIn() {
-    const { t } = this.context;
-    const { showIncomingTransactions, setShowIncomingTransactionsFeatureFlag } =
-      this.props;
+    const {
+      incomingTransactionsPreferences,
+      allNetworks,
+      setIncomingTransactionsPreferences,
+    } = this.props;
 
     return (
-      <div ref={this.settingsRefs[1]} className="settings-page__content-row">
-        <div className="settings-page__content-item">
-          <span>{t('showIncomingTransactions')}</span>
-          <div className="settings-page__content-description">
-            {t('showIncomingTransactionsDescription', [
-              // TODO: Update to use real link
-              <a
-                href={ETHERSCAN_PRIVACY_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                key="etherscan-privacy-link"
-              >
-                {t('etherscan')}
-              </a>,
-              // TODO: Update to use real link
-              <a
-                href={CONSENSYS_PRIVACY_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                key="ic-consensys-privacy-link"
-              >
-                {t('privacyMsg')}
-              </a>,
-            ])}
-          </div>
-        </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="showIncomingTransactions"
-          >
-            <ToggleButton
-              value={showIncomingTransactions}
-              onToggle={(value) =>
-                setShowIncomingTransactionsFeatureFlag(!value)
-              }
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
-        </div>
-      </div>
+      <IncomingTransactionToggle
+        wrapperRef={this.settingsRefs[1]}
+        allNetworks={allNetworks}
+        setIncomingTransactionsPreferences={setIncomingTransactionsPreferences}
+        incomingTransactionsPreferences={incomingTransactionsPreferences}
+      />
     );
   }
 
@@ -215,27 +187,32 @@ export default class SecurityTab extends PureComponent {
     const { usePhishDetect, setUsePhishDetect } = this.props;
 
     return (
-      <div ref={this.settingsRefs[2]} className="settings-page__content-row">
+      <Box
+        ref={this.settingsRefs[2]}
+        className="settings-page__content-row"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
+      >
         <div className="settings-page__content-item">
           <span>{t('usePhishingDetection')}</span>
           <div className="settings-page__content-description">
             {t('usePhishingDetectionDescription')}
           </div>
         </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="usePhishingDetection"
-          >
-            <ToggleButton
-              value={usePhishDetect}
-              onToggle={(value) => setUsePhishDetect(!value)}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
+
+        <div
+          className="settings-page__content-item-col"
+          data-testid="usePhishingDetection"
+        >
+          <ToggleButton
+            value={usePhishDetect}
+            onToggle={(value) => setUsePhishDetect(!value)}
+            offLabel={t('off')}
+            onLabel={t('on')}
+          />
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -245,27 +222,32 @@ export default class SecurityTab extends PureComponent {
       this.props;
 
     return (
-      <div ref={this.settingsRefs[3]} className="settings-page__content-row">
+      <Box
+        ref={this.settingsRefs[3]}
+        className="settings-page__content-row"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
+      >
         <div className="settings-page__content-item">
           <span>{t('participateInMetaMetrics')}</span>
           <div className="settings-page__content-description">
             <span>{t('participateInMetaMetricsDescription')}</span>
           </div>
         </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="participateInMetaMetrics"
-          >
-            <ToggleButton
-              value={participateInMetaMetrics}
-              onToggle={(value) => setParticipateInMetaMetrics(!value)}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
+
+        <div
+          className="settings-page__content-item-col"
+          data-testid="participateInMetaMetrics"
+        >
+          <ToggleButton
+            value={participateInMetaMetrics}
+            onToggle={(value) => setParticipateInMetaMetrics(!value)}
+            offLabel={t('off')}
+            onLabel={t('on')}
+          />
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -273,10 +255,12 @@ export default class SecurityTab extends PureComponent {
     const { t } = this.context;
 
     return (
-      <div
+      <Box
         ref={this.settingsRefs[4]}
         className="settings-page__content-row"
         data-testid="advanced-setting-choose-your-network"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Column}
       >
         <div className="settings-page__content-item">
           <span>{t('chooseYourNetwork')}</span>
@@ -311,7 +295,7 @@ export default class SecurityTab extends PureComponent {
             </Button>
           </div>
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -363,10 +347,12 @@ export default class SecurityTab extends PureComponent {
         : handleIpfsGatewayChange('');
     };
     return (
-      <div
+      <Box
         ref={this.settingsRefs[5]}
         className="settings-page__content-row"
         data-testid="setting-ipfs-gateway"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Column}
       >
         <div className="settings-page__content-item">
           <span>{t('addCustomIPFSGateway')}</span>
@@ -457,7 +443,7 @@ export default class SecurityTab extends PureComponent {
             />
           </div>
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -466,10 +452,13 @@ export default class SecurityTab extends PureComponent {
     const { useTokenDetection, setUseTokenDetection } = this.props;
 
     return (
-      <div
+      <Box
         ref={this.settingsRefs[6]}
         className="settings-page__content-row"
         data-testid="advanced-setting-gas-fee-estimation"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
       >
         <div className="settings-page__content-item">
           <span>{t('autoDetectTokens')}</span>
@@ -487,27 +476,26 @@ export default class SecurityTab extends PureComponent {
             ])}
           </div>
         </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="autoDetectTokens"
-          >
-            <ToggleButton
-              value={useTokenDetection}
-              onToggle={(value) => {
-                this.toggleSetting(
-                  value,
-                  MetaMetricsEventName.KeyAutoDetectTokens,
-                  MetaMetricsEventName.KeyAutoDetectTokens,
-                  setUseTokenDetection,
-                );
-              }}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
+
+        <div
+          className="settings-page__content-item-col"
+          data-testid="autoDetectTokens"
+        >
+          <ToggleButton
+            value={useTokenDetection}
+            onToggle={(value) => {
+              this.toggleSetting(
+                value,
+                MetaMetricsEventName.KeyAutoDetectTokens,
+                MetaMetricsEventName.KeyAutoDetectTokens,
+                setUseTokenDetection,
+              );
+            }}
+            offLabel={t('off')}
+            onLabel={t('on')}
+          />
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -517,34 +505,39 @@ export default class SecurityTab extends PureComponent {
       this.props;
 
     return (
-      <div ref={this.settingsRefs[7]} className="settings-page__content-row">
+      <Box
+        ref={this.settingsRefs[7]}
+        className="settings-page__content-row"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
+      >
         <div className="settings-page__content-item">
           <span>{t('useMultiAccountBalanceChecker')}</span>
           <div className="settings-page__content-description">
             {t('useMultiAccountBalanceCheckerSettingDescription')}
           </div>
         </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="useMultiAccountBalanceChecker"
-          >
-            <ToggleButton
-              value={useMultiAccountBalanceChecker}
-              onToggle={(value) => {
-                this.toggleSetting(
-                  value,
-                  MetaMetricsEventName.KeyBatchAccountBalanceRequests,
-                  MetaMetricsEventName.KeyBatchAccountBalanceRequests,
-                  setUseMultiAccountBalanceChecker,
-                );
-              }}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
+
+        <div
+          className="settings-page__content-item-col"
+          data-testid="useMultiAccountBalanceChecker"
+        >
+          <ToggleButton
+            value={useMultiAccountBalanceChecker}
+            onToggle={(value) => {
+              this.toggleSetting(
+                value,
+                MetaMetricsEventName.KeyBatchAccountBalanceRequests,
+                MetaMetricsEventName.KeyBatchAccountBalanceRequests,
+                setUseMultiAccountBalanceChecker,
+              );
+            }}
+            offLabel={t('off')}
+            onLabel={t('on')}
+          />
         </div>
-      </div>
+      </Box>
     );
   }
 
@@ -553,7 +546,13 @@ export default class SecurityTab extends PureComponent {
     const { useCurrencyRateCheck, setUseCurrencyRateCheck } = this.props;
 
     return (
-      <div ref={this.settingsRefs[8]} className="settings-page__content-row">
+      <Box
+        ref={this.settingsRefs[8]}
+        className="settings-page__content-row"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
+      >
         <div className="settings-page__content-item">
           <span>{t('currencyRateCheckToggle')}</span>
           <div className="settings-page__content-description">
@@ -585,20 +584,19 @@ export default class SecurityTab extends PureComponent {
             ])}
           </div>
         </div>
-        <div className="settings-page__content-item">
-          <div
-            className="settings-page__content-item-col"
-            data-testid="currencyRateCheckToggle"
-          >
-            <ToggleButton
-              value={useCurrencyRateCheck}
-              onToggle={(value) => setUseCurrencyRateCheck(!value)}
-              offLabel={t('off')}
-              onLabel={t('on')}
-            />
-          </div>
+
+        <div
+          className="settings-page__content-item-col"
+          data-testid="currencyRateCheckToggle"
+        >
+          <ToggleButton
+            value={useCurrencyRateCheck}
+            onToggle={(value) => setUseCurrencyRateCheck(!value)}
+            offLabel={t('off')}
+            onLabel={t('on')}
+          />
         </div>
-      </div>
+      </Box>
     );
   }
 

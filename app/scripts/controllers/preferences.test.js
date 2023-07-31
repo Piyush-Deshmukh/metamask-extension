@@ -1,67 +1,81 @@
-import { strict as assert } from 'assert';
-import sinon from 'sinon';
+/**
+ * @jest-environment node
+ */
 import { ControllerMessenger } from '@metamask/base-controller';
 import { TokenListController } from '@metamask/assets-controllers';
+import { CHAIN_IDS } from '../../../shared/constants/network';
 import PreferencesController from './preferences';
 
-describe('preferences controller', function () {
+const NETWORK_CONFIGURATION_DATA = {
+  'test-networkConfigurationId-1': {
+    rpcUrl: 'https://testrpc.com',
+    chainId: CHAIN_IDS.GOERLI,
+    nickname: '0X5',
+    rpcPrefs: { blockExplorerUrl: 'https://etherscan.io' },
+  },
+  'test-networkConfigurationId-2': {
+    rpcUrl: 'http://localhost:8545',
+    chainId: '0x539',
+    ticker: 'ETH',
+    nickname: 'Localhost 8545',
+    rpcPrefs: {},
+  },
+};
+describe('preferences controller', () => {
   let preferencesController;
   let tokenListController;
 
-  beforeEach(function () {
+  beforeEach(() => {
     const tokenListMessenger = new ControllerMessenger().getRestricted({
       name: 'TokenListController',
     });
     tokenListController = new TokenListController({
       chainId: '1',
       preventPollingOnNetworkRestart: false,
-      onNetworkStateChange: sinon.spy(),
-      onPreferencesStateChange: sinon.spy(),
+      onNetworkStateChange: jest.fn(),
+      onPreferencesStateChange: jest.fn(),
       messenger: tokenListMessenger,
     });
 
     preferencesController = new PreferencesController({
       initLangCode: 'en_US',
       tokenListController,
-      onInfuraIsBlocked: sinon.spy(),
-      onInfuraIsUnblocked: sinon.spy(),
+      onInfuraIsBlocked: jest.fn(),
+      onInfuraIsUnblocked: jest.fn(),
+      networkConfigurations: NETWORK_CONFIGURATION_DATA,
     });
   });
 
-  afterEach(function () {
-    sinon.restore();
-  });
-
-  describe('useBlockie', function () {
-    it('defaults useBlockie to false', function () {
-      assert.equal(preferencesController.store.getState().useBlockie, false);
+  describe('useBlockie', () => {
+    it('defaults useBlockie to false', () => {
+      expect(preferencesController.store.getState().useBlockie).toEqual(false);
     });
 
-    it('setUseBlockie to true', function () {
+    it('setUseBlockie to true', () => {
       preferencesController.setUseBlockie(true);
-      assert.equal(preferencesController.store.getState().useBlockie, true);
+      expect(preferencesController.store.getState().useBlockie).toEqual(true);
     });
   });
 
-  describe('setCurrentLocale', function () {
-    it('checks the default currentLocale', function () {
+  describe('setCurrentLocale', () => {
+    it('checks the default currentLocale', () => {
       const { currentLocale } = preferencesController.store.getState();
-      assert.equal(currentLocale, 'en_US');
+      expect(currentLocale).toEqual('en_US');
     });
 
-    it('sets current locale in preferences controller', function () {
+    it('sets current locale in preferences controller', () => {
       preferencesController.setCurrentLocale('ja');
       const { currentLocale } = preferencesController.store.getState();
-      assert.equal(currentLocale, 'ja');
+      expect(currentLocale).toEqual('ja');
     });
   });
 
-  describe('setAddresses', function () {
-    it('should keep a map of addresses to names and addresses in the store', function () {
+  describe('setAddresses', () => {
+    it('should keep a map of addresses to names and addresses in the store', () => {
       preferencesController.setAddresses(['0xda22le', '0x7e57e2']);
 
       const { identities } = preferencesController.store.getState();
-      assert.deepEqual(identities, {
+      expect(identities).toStrictEqual({
         '0xda22le': {
           name: 'Account 1',
           address: '0xda22le',
@@ -73,12 +87,12 @@ describe('preferences controller', function () {
       });
     });
 
-    it('should replace its list of addresses', function () {
+    it('should replace its list of addresses', () => {
       preferencesController.setAddresses(['0xda22le', '0x7e57e2']);
       preferencesController.setAddresses(['0xda22le77', '0x7e57e277']);
 
       const { identities } = preferencesController.store.getState();
-      assert.deepEqual(identities, {
+      expect(identities).toStrictEqual({
         '0xda22le77': {
           name: 'Account 1',
           address: '0xda22le77',
@@ -91,218 +105,216 @@ describe('preferences controller', function () {
     });
   });
 
-  describe('removeAddress', function () {
-    it('should remove an address from state', function () {
+  describe('removeAddress', () => {
+    it('should remove an address from state', () => {
       preferencesController.setAddresses(['0xda22le', '0x7e57e2']);
 
       preferencesController.removeAddress('0xda22le');
 
-      assert.equal(
+      expect(
         preferencesController.store.getState().identities['0xda22le'],
-        undefined,
-      );
+      ).toEqual(undefined);
     });
 
-    it('should switch accounts if the selected address is removed', function () {
+    it('should switch accounts if the selected address is removed', () => {
       preferencesController.setAddresses(['0xda22le', '0x7e57e2']);
 
       preferencesController.setSelectedAddress('0x7e57e2');
       preferencesController.removeAddress('0x7e57e2');
-
-      assert.equal(preferencesController.getSelectedAddress(), '0xda22le');
+      expect(preferencesController.getSelectedAddress()).toEqual('0xda22le');
     });
   });
 
-  describe('setAccountLabel', function () {
-    it('should update a label for the given account', function () {
+  describe('setAccountLabel', () => {
+    it('should update a label for the given account', () => {
       preferencesController.setAddresses(['0xda22le', '0x7e57e2']);
 
-      assert.deepEqual(
+      expect(
         preferencesController.store.getState().identities['0xda22le'],
-        {
-          name: 'Account 1',
-          address: '0xda22le',
-        },
-      );
+      ).toStrictEqual({
+        name: 'Account 1',
+        address: '0xda22le',
+      });
 
       preferencesController.setAccountLabel('0xda22le', 'Dazzle');
-      assert.deepEqual(
+      expect(
         preferencesController.store.getState().identities['0xda22le'],
-        {
-          name: 'Dazzle',
-          address: '0xda22le',
-        },
-      );
+      ).toStrictEqual({
+        name: 'Dazzle',
+        address: '0xda22le',
+      });
     });
   });
 
-  describe('setPasswordForgotten', function () {
-    it('should default to false', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.forgottenPassword, false);
-    });
-
-    it('should set the forgottenPassword property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().forgottenPassword,
+  describe('setPasswordForgotten', () => {
+    it('should default to false', () => {
+      expect(preferencesController.store.getState().forgottenPassword).toEqual(
         false,
       );
+    });
 
+    it('should set the forgottenPassword property in state', () => {
       preferencesController.setPasswordForgotten(true);
-
-      assert.equal(
-        preferencesController.store.getState().forgottenPassword,
+      expect(preferencesController.store.getState().forgottenPassword).toEqual(
         true,
       );
     });
   });
 
-  describe('setUsePhishDetect', function () {
-    it('should default to true', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.usePhishDetect, true);
+  describe('setUsePhishDetect', () => {
+    it('should default to true', () => {
+      expect(preferencesController.store.getState().usePhishDetect).toEqual(
+        true,
+      );
     });
 
-    it('should set the usePhishDetect property in state', function () {
-      assert.equal(preferencesController.store.getState().usePhishDetect, true);
+    it('should set the usePhishDetect property in state', () => {
       preferencesController.setUsePhishDetect(false);
-      assert.equal(
-        preferencesController.store.getState().usePhishDetect,
+      expect(preferencesController.store.getState().usePhishDetect).toEqual(
         false,
       );
     });
   });
 
-  describe('setUseMultiAccountBalanceChecker', function () {
-    it('should default to true', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.useMultiAccountBalanceChecker, true);
+  describe('setUseMultiAccountBalanceChecker', () => {
+    it('should default to true', () => {
+      expect(
+        preferencesController.store.getState().useMultiAccountBalanceChecker,
+      ).toEqual(true);
     });
 
-    it('should set the setUseMultiAccountBalanceChecker property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().useMultiAccountBalanceChecker,
-        true,
-      );
-
+    it('should set the setUseMultiAccountBalanceChecker property in state', () => {
       preferencesController.setUseMultiAccountBalanceChecker(false);
-
-      assert.equal(
+      expect(
         preferencesController.store.getState().useMultiAccountBalanceChecker,
-        false,
-      );
+      ).toEqual(false);
     });
   });
 
-  describe('setUseTokenDetection', function () {
-    it('should default to false', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.useTokenDetection, false);
-    });
-
-    it('should set the useTokenDetection property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().useTokenDetection,
+  describe('setUseTokenDetection', () => {
+    it('should default to false', () => {
+      expect(preferencesController.store.getState().useTokenDetection).toEqual(
         false,
       );
+    });
+
+    it('should set the useTokenDetection property in state', () => {
       preferencesController.setUseTokenDetection(true);
-      assert.equal(
-        preferencesController.store.getState().useTokenDetection,
+      expect(preferencesController.store.getState().useTokenDetection).toEqual(
         true,
       );
     });
   });
 
-  describe('setUseNftDetection', function () {
-    it('should default to false', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.useNftDetection, false);
-    });
-
-    it('should set the useNftDetection property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().useNftDetection,
+  describe('setUseNftDetection', () => {
+    it('should default to false', () => {
+      expect(preferencesController.store.getState().useNftDetection).toEqual(
         false,
       );
+    });
+
+    it('should set the useNftDetection property in state', () => {
       preferencesController.setOpenSeaEnabled(true);
       preferencesController.setUseNftDetection(true);
-      assert.equal(
-        preferencesController.store.getState().useNftDetection,
+      expect(preferencesController.store.getState().useNftDetection).toEqual(
         true,
       );
     });
   });
 
-  describe('setOpenSeaEnabled', function () {
-    it('should default to false', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.openSeaEnabled, false);
-    });
-
-    it('should set the openSeaEnabled property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().openSeaEnabled,
+  describe('setOpenSeaEnabled', () => {
+    it('should default to false', () => {
+      expect(preferencesController.store.getState().openSeaEnabled).toEqual(
         false,
       );
+    });
+
+    it('should set the openSeaEnabled property in state', () => {
       preferencesController.setOpenSeaEnabled(true);
-      assert.equal(preferencesController.store.getState().openSeaEnabled, true);
+      expect(preferencesController.store.getState().openSeaEnabled).toEqual(
+        true,
+      );
     });
   });
 
-  describe('setAdvancedGasFee', function () {
-    it('should default to null', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.advancedGasFee, null);
+  describe('setAdvancedGasFee', () => {
+    it('should default to null', () => {
+      expect(preferencesController.store.getState().advancedGasFee).toEqual(
+        null,
+      );
     });
 
-    it('should set the setAdvancedGasFee property in state', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.advancedGasFee, null);
+    it('should set the setAdvancedGasFee property in state', () => {
       preferencesController.setAdvancedGasFee({
         maxBaseFee: '1.5',
         priorityFee: '2',
       });
-      assert.equal(
+      expect(
         preferencesController.store.getState().advancedGasFee.maxBaseFee,
-        '1.5',
-      );
-      assert.equal(
+      ).toEqual('1.5');
+      expect(
         preferencesController.store.getState().advancedGasFee.priorityFee,
-        '2',
-      );
+      ).toEqual('2');
     });
   });
 
-  describe('setTheme', function () {
-    it('should default to value "OS"', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.theme, 'os');
+  describe('setTheme', () => {
+    it('should default to value "OS"', () => {
+      expect(preferencesController.store.getState().theme).toEqual('os');
     });
 
-    it('should set the setTheme property in state', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.theme, 'os');
+    it('should set the setTheme property in state', () => {
       preferencesController.setTheme('dark');
-      assert.equal(preferencesController.store.getState().theme, 'dark');
+      expect(preferencesController.store.getState().theme).toEqual('dark');
     });
   });
 
-  describe('setUseCurrencyRateCheck', function () {
-    it('should default to false', function () {
-      const state = preferencesController.store.getState();
-      assert.equal(state.useCurrencyRateCheck, true);
+  describe('setUseCurrencyRateCheck', () => {
+    it('should default to false', () => {
+      expect(
+        preferencesController.store.getState().useCurrencyRateCheck,
+      ).toEqual(true);
     });
 
-    it('should set the useCurrencyRateCheck property in state', function () {
-      assert.equal(
-        preferencesController.store.getState().useCurrencyRateCheck,
-        true,
-      );
+    it('should set the useCurrencyRateCheck property in state', () => {
       preferencesController.setUseCurrencyRateCheck(false);
-      assert.equal(
+      expect(
         preferencesController.store.getState().useCurrencyRateCheck,
+      ).toEqual(false);
+    });
+  });
+
+  describe('setIncomingTransactionsPreferences', () => {
+    const addedNonTestNetworks = Object.keys(NETWORK_CONFIGURATION_DATA);
+
+    it('should have default value combined', () => {
+      const state = preferencesController.store.getState();
+      expect(state.incomingTransactionsPreferences).toStrictEqual({
+        [CHAIN_IDS.MAINNET]: true,
+        [CHAIN_IDS.LINEA_MAINNET]: true,
+        [NETWORK_CONFIGURATION_DATA[addedNonTestNetworks[0]].chainId]: true,
+        [NETWORK_CONFIGURATION_DATA[addedNonTestNetworks[1]].chainId]: true,
+        [CHAIN_IDS.GOERLI]: true,
+        [CHAIN_IDS.SEPOLIA]: true,
+        [CHAIN_IDS.LINEA_GOERLI]: true,
+      });
+    });
+
+    it('should update incomingTransactionsPreferences with givin value set', () => {
+      preferencesController.setIncomingTransactionsPreferences(
+        CHAIN_IDS.LINEA_MAINNET,
         false,
       );
+      const state = preferencesController.store.getState();
+      expect(state.incomingTransactionsPreferences).toStrictEqual({
+        [CHAIN_IDS.MAINNET]: true,
+        [CHAIN_IDS.LINEA_MAINNET]: false,
+        [NETWORK_CONFIGURATION_DATA[addedNonTestNetworks[0]].chainId]: true,
+        [NETWORK_CONFIGURATION_DATA[addedNonTestNetworks[1]].chainId]: true,
+        [CHAIN_IDS.GOERLI]: true,
+        [CHAIN_IDS.SEPOLIA]: true,
+        [CHAIN_IDS.LINEA_GOERLI]: true,
+      });
     });
   });
 });

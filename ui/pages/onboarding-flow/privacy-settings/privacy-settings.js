@@ -28,10 +28,9 @@ import {
 } from '../../../helpers/constants/design-system';
 import { ONBOARDING_PIN_EXTENSION_ROUTE } from '../../../helpers/constants/routes';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { getCurrentNetwork } from '../../../selectors';
+import { getAllNetworks, getCurrentNetwork } from '../../../selectors';
 import {
   setCompletedOnboarding,
-  setFeatureFlag,
   setIpfsGateway,
   setUseCurrencyRateCheck,
   setUseMultiAccountBalanceChecker,
@@ -40,18 +39,22 @@ import {
   setUseAddressBarEnsResolution,
   showModal,
   toggleNetworkMenu,
+  setIncomingTransactionsPreferences,
 } from '../../../store/actions';
+import IncomingTransactionToggle from '../../../components/app/incoming-trasaction-toggle';
 import { Setting } from './setting';
 
 export default function PrivacySettings() {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { incomingTransactionsPreferences } = useSelector(
+    (state) => state.metamask,
+  );
+
   const [usePhishingDetection, setUsePhishingDetection] = useState(true);
   const [turnOnTokenDetection, setTurnOnTokenDetection] = useState(true);
   const [turnOnCurrencyRateCheck, setTurnOnCurrencyRateCheck] = useState(true);
-  const [showIncomingTransactions, setShowIncomingTransactions] =
-    useState(true);
   const [
     isMultiAccountBalanceCheckerEnabled,
     setMultiAccountBalanceCheckerEnabled,
@@ -62,11 +65,10 @@ export default function PrivacySettings() {
   const trackEvent = useContext(MetaMetricsContext);
 
   const currentNetwork = useSelector(getCurrentNetwork);
+  const allNetworks = useSelector(getAllNetworks);
 
   const handleSubmit = () => {
-    dispatch(
-      setFeatureFlag('showIncomingTransactions', showIncomingTransactions),
-    );
+    console.log({ turnOnCurrencyRateCheck });
     dispatch(setUsePhishDetect(usePhishingDetection));
     dispatch(setUseTokenDetection(turnOnTokenDetection));
     dispatch(
@@ -85,7 +87,7 @@ export default function PrivacySettings() {
       category: MetaMetricsEventCategory.Onboarding,
       event: MetaMetricsEventName.OnboardingWalletAdvancedSettings,
       properties: {
-        show_incoming_tx: showIncomingTransactions,
+        show_incoming_tx: incomingTransactionsPreferences,
         use_phising_detection: usePhishingDetection,
         turnon_token_detection: turnOnTokenDetection,
       },
@@ -125,28 +127,12 @@ export default function PrivacySettings() {
           className="privacy-settings__settings"
           data-testid="privacy-settings-settings"
         >
-          <Setting
-            value={showIncomingTransactions}
-            setValue={setShowIncomingTransactions}
-            title={t('showIncomingTransactions')}
-            description={t('onboardingShowIncomingTransactionsDescription', [
-              <a
-                key="etherscan"
-                href="https://etherscan.io/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t('etherscan')}
-              </a>,
-              <a
-                href="https://etherscan.io/privacyPolicy"
-                target="_blank"
-                rel="noreferrer"
-                key="privacyMsg"
-              >
-                {t('privacyMsg')}
-              </a>,
-            ])}
+          <IncomingTransactionToggle
+            allNetworks={allNetworks}
+            setIncomingTransactionsPreferences={(chainId, value) =>
+              dispatch(setIncomingTransactionsPreferences(chainId, value))
+            }
+            incomingTransactionsPreferences={incomingTransactionsPreferences}
           />
           <Setting
             value={usePhishingDetection}

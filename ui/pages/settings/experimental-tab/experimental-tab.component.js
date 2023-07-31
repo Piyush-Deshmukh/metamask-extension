@@ -6,15 +6,15 @@ import {
   handleSettingsRefs,
 } from '../../../helpers/utils/settings-search';
 import { MetaMetricsEventCategory } from '../../../../shared/constants/metametrics';
-import Typography from '../../../components/ui/typography/typography';
-import { Text } from '../../../components/component-library';
+
+import { Text, Box } from '../../../components/component-library';
 import {
-  FONT_WEIGHT,
   TextColor,
-  ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
   TextVariant,
-  ///: END:ONLY_INCLUDE_IN
-  TypographyVariant,
+  Display,
+  FlexDirection,
+  JustifyContent,
+  FontWeight,
 } from '../../../helpers/constants/design-system';
 ///: BEGIN:ONLY_INCLUDE_IN(desktop)
 import DesktopEnableButton from '../../../components/app/desktop-enable-button';
@@ -152,39 +152,51 @@ export default class ExperimentalTab extends PureComponent {
 
     return (
       <>
-        <div ref={this.settingsRefs[0]} className="settings-page__content-row">
+        <Box
+          ref={this.settingsRefs[0]}
+          className="settings-page__content-row"
+          display={Display.Flex}
+          flexDirection={FlexDirection.Row}
+          justifyContent={JustifyContent.spaceBetween}
+        >
           <div className="settings-page__content-item">
             <span>{t('enableOpenSeaAPI')}</span>
             <div className="settings-page__content-description">
               {t('enableOpenSeaAPIDescription')}
             </div>
           </div>
-          <div className="settings-page__content-item">
-            <div className="settings-page__content-item-col">
-              <ToggleButton
-                value={openSeaEnabled}
-                onToggle={(value) => {
-                  this.context.trackEvent({
-                    category: MetaMetricsEventCategory.Settings,
-                    event: 'Enabled/Disable OpenSea',
-                    properties: {
-                      action: 'Enabled/Disable OpenSea',
-                      legacy_event: true,
-                    },
-                  });
-                  // value is positive when being toggled off
-                  if (value && useNftDetection) {
-                    setUseNftDetection(false);
-                  }
-                  setOpenSeaEnabled(!value);
-                }}
-                offLabel={t('off')}
-                onLabel={t('on')}
-              />
-            </div>
+
+          <div className="settings-page__content-item-col">
+            <ToggleButton
+              value={openSeaEnabled}
+              onToggle={(value) => {
+                this.context.trackEvent({
+                  category: MetaMetricsEventCategory.Settings,
+                  event: 'Enabled/Disable OpenSea',
+                  properties: {
+                    action: 'Enabled/Disable OpenSea',
+                    legacy_event: true,
+                  },
+                });
+                // value is positive when being toggled off
+                if (value && useNftDetection) {
+                  setUseNftDetection(false);
+                }
+                setOpenSeaEnabled(!value);
+              }}
+              offLabel={t('off')}
+              onLabel={t('on')}
+            />
           </div>
-        </div>
-        <div ref={this.settingsRefs[1]} className="settings-page__content-row">
+        </Box>
+
+        <Box
+          ref={this.settingsRefs[1]}
+          className="settings-page__content-row"
+          display={Display.Flex}
+          flexDirection={FlexDirection.Row}
+          justifyContent={JustifyContent.spaceBetween}
+        >
           <div className="settings-page__content-item">
             <span>{t('useNftDetection')}</span>
             <div className="settings-page__content-description">
@@ -201,30 +213,29 @@ export default class ExperimentalTab extends PureComponent {
               </Text>
             </div>
           </div>
-          <div className="settings-page__content-item">
-            <div className="settings-page__content-item-col">
-              <ToggleButton
-                value={useNftDetection}
-                onToggle={(value) => {
-                  this.context.trackEvent({
-                    category: MetaMetricsEventCategory.Settings,
-                    event: 'NFT Detected',
-                    properties: {
-                      action: 'NFT Detected',
-                      legacy_event: true,
-                    },
-                  });
-                  if (!value && !openSeaEnabled) {
-                    setOpenSeaEnabled(!value);
-                  }
-                  setUseNftDetection(!value);
-                }}
-                offLabel={t('off')}
-                onLabel={t('on')}
-              />
-            </div>
+
+          <div className="settings-page__content-item-col">
+            <ToggleButton
+              value={useNftDetection}
+              onToggle={(value) => {
+                this.context.trackEvent({
+                  category: MetaMetricsEventCategory.Settings,
+                  event: 'NFT Detected',
+                  properties: {
+                    action: 'NFT Detected',
+                    legacy_event: true,
+                  },
+                });
+                if (!value && !openSeaEnabled) {
+                  setOpenSeaEnabled(!value);
+                }
+                setUseNftDetection(!value);
+              }}
+              offLabel={t('off')}
+              onLabel={t('on')}
+            />
           </div>
-        </div>
+        </Box>
       </>
     );
   }
@@ -239,44 +250,49 @@ export default class ExperimentalTab extends PureComponent {
 
     return (
       <>
-        <Typography
-          variant={TypographyVariant.H4}
+        <Text
+          variant={TextVariant.headingSm}
+          as="h4"
           color={TextColor.textAlternative}
           marginBottom={2}
-          fontWeight={FONT_WEIGHT.BOLD}
+          fontWeight={FontWeight.Bold}
         >
           {t('privacy')}
-        </Typography>
-        <div
+        </Text>
+        <Box
           ref={this.settingsRefs[1]}
           className="settings-page__content-row settings-page__content-row-experimental"
+          marginBottom={3}
         >
           <div className="settings-page__content-item">
             <span>{t('transactionSecurityCheck')}</span>
             <div className="settings-page__content-description">
-              <Typography
-                variant={TypographyVariant.H6}
+              <Text
+                variant={TextVariant.bodySm}
+                as="h6"
                 color={TextColor.textAlternative}
               >
                 {t('transactionSecurityCheckDescription')}
-              </Typography>
-              <Typography
+              </Text>
+              <Text
                 marginTop={3}
                 marginBottom={1}
-                variant={TypographyVariant.H6}
+                variant={TextVariant.bodySm}
+                as="h6"
                 color={TextColor.textAlternative}
               >
                 {t('selectProvider')}
-              </Typography>
+              </Text>
               <div className="settings-page__content-item-col settings-page__content-item-col-open-sea">
-                <Typography
-                  variant={TypographyVariant.H5}
+                <Text
+                  variant={TextVariant.bodyMd}
+                  as="h5"
                   color={TextColor.textDefault}
-                  fontWeight={FONT_WEIGHT.MEDIUM}
+                  fontWeight={FontWeight.Medium}
                   marginBottom={0}
                 >
                   {t('openSea')}
-                </Typography>
+                </Text>
                 <ToggleButton
                   value={transactionSecurityCheckEnabled}
                   onToggle={(value) => {
@@ -292,8 +308,9 @@ export default class ExperimentalTab extends PureComponent {
                   }}
                 />
               </div>
-              <Typography
-                variant={TypographyVariant.H6}
+              <Text
+                variant={TextVariant.bodySm}
+                as="h6"
                 color={TextColor.textAlternative}
                 marginTop={0}
               >
@@ -307,18 +324,19 @@ export default class ExperimentalTab extends PureComponent {
                     {t('termsOfUse')}
                   </a>,
                 ])}
-              </Typography>
-              <Typography
-                variant={TypographyVariant.H5}
+              </Text>
+              <Text
+                variant={TextVariant.bodyMd}
+                as="h5"
+                fontWeight={FontWeight.Medium}
                 color={TextColor.textMuted}
-                fontWeight={FONT_WEIGHT.MEDIUM}
                 marginTop={2}
               >
                 {t('moreComingSoon')}
-              </Typography>
+              </Text>
             </div>
           </div>
-        </div>
+        </Box>
       </>
     );
   }
@@ -328,20 +346,22 @@ export default class ExperimentalTab extends PureComponent {
     const { t } = this.context;
 
     return (
-      <div
+      <Box
         ref={this.settingsRefs[6]}
         className="settings-page__content-row"
         data-testid="advanced-setting-desktop-pairing"
+        display={Display.Flex}
+        flexDirection={FlexDirection.Row}
+        justifyContent={JustifyContent.spaceBetween}
       >
         <div className="settings-page__content-item">
           <span>{t('desktopEnableButtonDescription')}</span>
         </div>
-        <div className="settings-page__content-item">
-          <div className="settings-page__content-item-col">
-            <DesktopEnableButton />
-          </div>
+
+        <div className="settings-page__content-item-col">
+          <DesktopEnableButton />
         </div>
-      </div>
+      </Box>
     );
   }
   ///: END:ONLY_INCLUDE_IN

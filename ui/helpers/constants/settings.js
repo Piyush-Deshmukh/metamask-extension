@@ -152,7 +152,7 @@ export const SETTINGS_CONSTANTS = [
   {
     tabMessage: (t) => t('securityAndPrivacy'),
     sectionMessage: (t) => t('showIncomingTransactions'),
-    descriptionMessage: (t) => t('showIncomingTransactionsDescription'),
+    descriptionMessage: (t) => t('showIncomingTransactionsInformation'),
     route: `${SECURITY_ROUTE}#incoming-transaction`,
     icon: 'fa fa-lock',
   },

@@ -71,8 +71,8 @@ const t = (key) => {
       return 'Reveal Secret Recovery Phrase';
     case 'showIncomingTransactions':
       return 'Show incoming transactions';
-    case 'showIncomingTransactionsDescription':
-      return 'Select this to use Etherscan to show incoming transactions in the transactions list';
+    case 'showIncomingTransactionsInformation':
+      return 'This relies on each network which will have access to your Ethereum address and your IP address.';
     case 'usePhishingDetection':
       return 'Use phishing detection';
     case 'usePhishingDetectionDescription':

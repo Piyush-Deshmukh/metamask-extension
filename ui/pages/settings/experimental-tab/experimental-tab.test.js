@@ -19,6 +19,7 @@ describe('ExperimentalTab', () => {
     expect(() => {
       render();
     }).not.toThrow();
+    expect(render()).toMatchSnapshot();
   });
 
   describe('with desktop enabled', () => {

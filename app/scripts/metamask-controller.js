@@ -402,6 +402,7 @@ export default class MetamaskController extends EventEmitter {
       ),
       tokenListController: this.tokenListController,
       provider: this.provider,
+      networkConfigurations: this.networkController.state.networkConfigurations,
     });
 
     this.preferencesController.store.subscribe(async ({ currentLocale }) => {
@@ -2250,6 +2251,10 @@ export default class MetamaskController extends EventEmitter {
       setCurrentLocale: preferencesController.setCurrentLocale.bind(
         preferencesController,
       ),
+      setIncomingTransactionsPreferences:
+        preferencesController.setIncomingTransactionsPreferences.bind(
+          preferencesController,
+        ),
       markPasswordForgotten: this.markPasswordForgotten.bind(this),
       unMarkPasswordForgotten: this.unMarkPasswordForgotten.bind(this),
       getRequestAccountTabIds: this.getRequestAccountTabIds,

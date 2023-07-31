@@ -1,5 +1,6 @@
 import { draftTransactionInitialState } from '../ui/ducks/send';
 import { KeyringType } from '../shared/constants/keyring';
+import { CHAIN_IDS } from '../shared/constants/network';
 
 const state = {
   invalidCustomNetwork: {
@@ -504,6 +505,12 @@ const state = {
     },
     useBlockie: false,
     featureFlags: {},
+    incomingTransactionsPreferences: {
+      [CHAIN_IDS.MAINNET]: true,
+      [CHAIN_IDS.POLYGON]: false,
+      [CHAIN_IDS.LOCALHOST]: false,
+      [CHAIN_IDS.SEPOLIA]: true,
+    },
     welcomeScreenSeen: false,
     currentLocale: 'en',
     preferences: {
@@ -1599,10 +1606,10 @@ const state = {
   },
 };
 
-export const networkList =  [
+export const networkList = [
   {
     blockExplorerUrl: 'https://etherscan.io',
-    chainId: '0x1',
+    chainId: CHAIN_IDS.MAINNET,
     iconColor: 'var(--mainnet)',
     isATestNetwork: false,
     labelKey: 'mainnet',
@@ -1613,7 +1620,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: 'https://goerli.etherscan.io',
-    chainId: '0x5',
+    chainId: CHAIN_IDS.GOERLI,
     iconColor: 'var(--color-network-goerli-default)',
     isATestNetwork: true,
     labelKey: 'goerli',
@@ -1624,7 +1631,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: 'https://sepolia.etherscan.io',
-    chainId: '0xaa36a7',
+    chainId: CHAIN_IDS.SEPOLIA,
     iconColor: 'var(--color-network-sepolia-default)',
     isATestNetwork: true,
     labelKey: 'sepolia',
@@ -1635,7 +1642,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: '',
-    chainId: '0x539',
+    chainId: CHAIN_IDS.LOCALHOST,
     iconColor: 'var(--color-network-localhost-default)',
     isATestNetwork: true,
     label: 'Localhost 8545',
@@ -1645,7 +1652,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: 'https://bscscan.com',
-    chainId: '0x38',
+    chainId: CHAIN_IDS.BSC,
     iconColor: 'var(--color-network-localhost-default)',
     isATestNetwork: false,
     label: 'Binance Smart Chain',
@@ -1655,7 +1662,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: 'https://cchain.explorer.avax.network/',
-    chainId: '0xa86a',
+    chainId: CHAIN_IDS.AVALANCHE,
     iconColor: 'var(--color-network-localhost-default)',
     isATestNetwork: false,
     label: 'Avalanche',
@@ -1665,7 +1672,7 @@ export const networkList =  [
   },
   {
     blockExplorerUrl: 'https://polygonscan.com',
-    chainId: '0x89',
+    chainId: CHAIN_IDS.POLYGON,
     iconColor: 'var(--color-network-localhost-default)',
     isATestNetwork: false,
     label: 'Polygon',
@@ -1673,6 +1680,6 @@ export const networkList =  [
     rpcUrl: 'https://polygon-rpc.com',
     ticker: 'MATIC',
   },
-]
+];
 
 export default state;

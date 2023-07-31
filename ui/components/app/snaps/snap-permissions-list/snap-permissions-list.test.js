@@ -25,6 +25,7 @@ describe('Snap Permission List', () => {
   it('renders permissions list for snaps', () => {
     renderWithProvider(
       <SnapPermissionsList
+        snapId="snapid"
         permissions={mockPermissionData}
         targetSubjectMetadata={mockTargetSubjectMetadata}
       />,
