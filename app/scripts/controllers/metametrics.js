@@ -729,9 +729,11 @@ export default class MetaMetricsController {
     const { traits, previousUserTraits } = this.store.getState();
 
     const securityProviders = [];
+    ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
     if (metamaskState.securityAlertsEnabled) {
       securityProviders.push('blockaid');
     }
+    ///: END:ONLY_INCLUDE_IN
 
     ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
     if (metamaskState.transactionSecurityCheckEnabled) {

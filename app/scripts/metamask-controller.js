@@ -1213,7 +1213,9 @@ export default class MetamaskController extends EventEmitter {
       getAccountType: this.getAccountType.bind(this),
       getDeviceModel: this.getDeviceModel.bind(this),
       getTokenStandardAndDetails: this.getTokenStandardAndDetails.bind(this),
+      ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
       securityProviderRequest: this.securityProviderRequest.bind(this),
+      ///: END:ONLY_INCLUDE_IN
 
       ///: BEGIN:ONLY_INCLUDE_IN(build-mmi)
       transactionUpdateController: this.transactionUpdateController,
@@ -1377,7 +1379,9 @@ export default class MetamaskController extends EventEmitter {
         this.preferencesController.store.getState()
           ?.disabledRpcMethodPreferences?.eth_sign,
       getAllState: this.getState.bind(this),
+      ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
       securityProviderRequest: this.securityProviderRequest.bind(this),
+      ///: END:ONLY_INCLUDE_IN
       getCurrentChainId: () =>
         this.networkController.state.providerConfig.chainId,
     });
@@ -4073,7 +4077,9 @@ export default class MetamaskController extends EventEmitter {
         getMetricsState: this.metaMetricsController.store.getState.bind(
           this.metaMetricsController.store,
         ),
+        ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
         securityProviderRequest: this.securityProviderRequest.bind(this),
+        ///: END:ONLY_INCLUDE_IN
       }),
     );
 
@@ -4754,10 +4760,8 @@ export default class MetamaskController extends EventEmitter {
     }
   };
 
-  // We can't code-fence the whole method as some controllers rely on the method. But we can return null
-  // if build is flask
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   async securityProviderRequest(_requestData, _methodName) {
-    ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
     const { currentLocale, transactionSecurityCheckEnabled } =
       this.preferencesController.store.getState();
 
@@ -4780,7 +4784,7 @@ export default class MetamaskController extends EventEmitter {
         throw err;
       }
     }
-    ///: END:ONLY_INCLUDE_IN
-    return undefined;
+    return null;
   }
+  ///: END:ONLY_INCLUDE_IN
 }
