@@ -6,6 +6,8 @@ import { GasFeeContextProvider } from '../../../contexts/gasFee';
 import configureStore from '../../../store/store';
 import testData from '../../../../.storybook/test-data';
 import TransactionAlerts from '.';
+import { NetworkType } from '@metamask/controller-utils';
+import { NetworkStatus } from '@metamask/network-controller';
 
 const customTransaction = ({
   estimateUsed,
@@ -58,11 +60,15 @@ const customStore = ({
         networkCongestion: isNetworkBusy ? 1 : 0.1,
       },
       // supportsEIP1559
-      networkDetails: {
-        ...testData?.metamask?.networkDetails,
-        EIPS: {
-          ...testData?.metamask?.networkDetails?.EIPS,
-          1159: Boolean(supportsEIP1559),
+      networksMetadata: {
+        selectedNetworkClientId: NetworkType.mainnet,
+        [NetworkType.mainnet]: {
+          ...testData?.metamask?.networkDetails,
+          EIPS: {
+            ...testData?.metamask?.networkDetails?.EIPS,
+            1559: Boolean(supportsEIP1559),
+          },
+          status: NetworkStatus.Available,
         },
       },
       // pendingTransactions

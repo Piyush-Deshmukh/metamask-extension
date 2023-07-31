@@ -16,6 +16,8 @@ import {
 import { domainInitialState } from '../../ducks/domains';
 
 import ConfirmTransactionBase from './confirm-transaction-base.container';
+import { NetworkType } from '@metamask/controller-utils';
+import { NetworkStatus } from '@metamask/network-controller';
 
 const middleware = [thunk];
 
@@ -85,8 +87,12 @@ const baseStore = {
       },
     ],
     networkId: mockNetworkId,
-    networkDetails: {
-      EIPS: {},
+    selectedNetworkClientId: NetworkType.mainnet,
+    networksMetadata: {
+      [NetworkType.mainnet]: {
+        EIPS: {},
+        status: NetworkStatus.Available,
+      },
     },
     tokens: [],
     preferences: {
@@ -253,10 +259,12 @@ describe('Confirm Transaction Base', () => {
           },
         },
         gasEstimateType: GasEstimateTypes.feeMarket,
-        networkDetails: {
-          ...mockedStore.metamask.networkDetails,
-          EIPS: {
-            1559: true,
+        selectedNetworkClientId: NetworkType.mainnet,
+        networksMetadata: {
+          ...mockedStore.metamask.networksMetadata,
+          [NetworkType.mainnet]: {
+            EIPS: { 1559: true },
+            status: NetworkStatus.Available,
           },
         },
         customGas: {
@@ -324,10 +332,14 @@ describe('Confirm Transaction Base', () => {
           },
         },
         gasEstimateType: GasEstimateTypes.feeMarket,
-        networkDetails: {
-          ...mockedStore.metamask.networkDetails,
-          EIPS: {
-            1559: true,
+        selectedNetworkClientId: NetworkType.mainnet,
+        networksMetadata: {
+          ...mockedStore.metamask.networksMetadata,
+          [NetworkType.mainnet]: {
+            EIPS: {
+              1559: true,
+            },
+            status: NetworkStatus.Available,
           },
         },
         customGas: {

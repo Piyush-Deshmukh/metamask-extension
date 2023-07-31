@@ -22,6 +22,7 @@ import { createTestProviderTools } from '../../test/stub/provider';
 import { HardwareDeviceNames } from '../../shared/constants/hardware-wallets';
 import { KeyringType } from '../../shared/constants/keyring';
 import { deferredPromise } from './lib/util';
+import { NetworkType } from '@metamask/controller-utils';
 
 const Ganache = require('../../test/e2e/ganache');
 
@@ -160,10 +161,12 @@ const firstTimeState = {
         id: NETWORK_CONFIGURATION_ID_1,
       },
     },
-    networkDetails: {
-      EIPS: {
-        1559: false,
-      },
+    networksMetadata: {
+      [NetworkType.mainnet]: {
+        EIPS: {
+          1559: false,
+        },
+        status: 'available'
     },
   },
   NotificationController: {

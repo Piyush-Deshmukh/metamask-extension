@@ -74,6 +74,8 @@ import sendReducer, {
   updateGasPrice,
 } from './send';
 import { draftTransactionInitialState, editExistingTransaction } from '.';
+import { NetworkType } from '@metamask/controller-utils';
+import { NetworkStatus } from '@metamask/network-controller';
 
 const mockStore = createMockStore([thunk]);
 
@@ -1272,9 +1274,13 @@ describe('Send Slice', () => {
           metamask: {
             gasEstimateType: GasEstimateTypes.none,
             gasFeeEstimates: {},
-            networkDetails: {
-              EIPS: {
-                1559: true,
+            selectedNetworkClientId: NetworkType.goerli,
+            networksMetadata: {
+              [NetworkType.goerli]: {
+                EIPS: {
+                  1559: true,
+                },
+                status: NetworkStatus.Available,
               },
             },
             selectedAddress: mockAddress1,
@@ -1298,6 +1304,7 @@ describe('Send Slice', () => {
             },
             providerConfig: {
               chainId: '0x5',
+              ticker: 'ETH',
             },
             useTokenDetection: true,
             tokenList: {
