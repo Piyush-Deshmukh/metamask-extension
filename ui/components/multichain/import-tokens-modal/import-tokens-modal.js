@@ -499,7 +499,9 @@ export const ImportTokensModal = ({ onClose }) => {
                           type="link"
                           key="import-token-token-detection-announcement"
                           onClick={() =>
-                            history.push(`${SECURITY_ROUTE}#advanced-settings-autodetect-tokens`)
+                            history.push(
+                              `${SECURITY_ROUTE}#advanced-settings-autodetect-tokens`,
+                            )
                           }
                         >
                           {t('inYourSettings')}
