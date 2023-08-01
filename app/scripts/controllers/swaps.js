@@ -153,8 +153,6 @@ export default class SwapsController {
         networkController.state;
       const selectedNetworkStatus =
         networksMetadata[selectedNetworkClientId]?.status;
-      console.log('networksMetadata', networksMetadata);
-      console.log('selectedNetworkClientId', selectedNetworkClientId);
       if (
         selectedNetworkStatus === NetworkStatus.Available &&
         networkId !== this._currentNetworkId

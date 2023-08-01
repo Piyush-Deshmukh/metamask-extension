@@ -359,8 +359,8 @@ describe('MetaMask Reducers', () => {
           ...mockState,
           metamask: {
             ...mockState.metamask,
+            selectedNetworkClientId: NetworkType.mainnet,
             networksMetadata: {
-              selectedNetworkClientId: NetworkType.mainnet,
               [NetworkType.mainnet]: {
                 EIPS: {
                   1559: false,
@@ -381,10 +381,10 @@ describe('MetaMask Reducers', () => {
           ...mockState,
           metamask: {
             ...mockState.metamask,
+            selectedNetworkClientId: NetworkType.mainnet,
             networksMetadata: {
-              selectedNetworkClientId: NetworkType.mainnet,
               [NetworkType.mainnet]: {
-                EIPS: {},
+                EIPS: { 1559: true },
                 status: 'available',
               },
             },
