@@ -742,7 +742,6 @@ export default class MetamaskController extends EventEmitter {
         networkControllerMessenger,
         'NetworkController:networkDidChange',
       ),
-      getCurrentChainId: this.getCurrentChainId.bind(this),
       preferencesController: this.preferencesController,
       onboardingController: this.onboardingController,
       initState: initState.IncomingTransactionsController,
@@ -1180,7 +1179,6 @@ export default class MetamaskController extends EventEmitter {
           ({ networkId }) => networkId,
         );
       },
-      getCurrentChainId: this.getCurrentChainId.bind(this),
       preferencesStore: this.preferencesController.store,
       txHistoryLimit: 60,
       signTransaction: this.keyringController.signTransaction.bind(
