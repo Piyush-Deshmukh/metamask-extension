@@ -15,6 +15,7 @@ import {
   METAMASK_STALELIST_FILE,
   METAMASK_HOTLIST_DIFF_FILE,
 } from '@metamask/phishing-controller';
+import { NetworkType } from '@metamask/controller-utils';
 import { TransactionStatus } from '../../shared/constants/transaction';
 import createTxMeta from '../../test/lib/createTxMeta';
 import { NETWORK_TYPES } from '../../shared/constants/network';
@@ -22,7 +23,6 @@ import { createTestProviderTools } from '../../test/stub/provider';
 import { HardwareDeviceNames } from '../../shared/constants/hardware-wallets';
 import { KeyringType } from '../../shared/constants/keyring';
 import { deferredPromise } from './lib/util';
-import { NetworkType } from '@metamask/controller-utils';
 
 const Ganache = require('../../test/e2e/ganache');
 
@@ -161,22 +161,24 @@ const firstTimeState = {
         id: NETWORK_CONFIGURATION_ID_1,
       },
     },
+    selectedNetworkClientId: NetworkType.mainnet,
     networksMetadata: {
       [NetworkType.mainnet]: {
         EIPS: {
           1559: false,
         },
-        status: 'available'
+        status: 'available',
+      },
     },
-  },
-  NotificationController: {
-    notifications: {
-      [NOTIFICATION_ID]: {
-        id: NOTIFICATION_ID,
-        origin: 'local:http://localhost:8086/',
-        createdDate: 1652967897732,
-        readDate: null,
-        message: 'Hello, http://localhost:8086!',
+    NotificationController: {
+      notifications: {
+        [NOTIFICATION_ID]: {
+          id: NOTIFICATION_ID,
+          origin: 'local:http://localhost:8086/',
+          createdDate: 1652967897732,
+          readDate: null,
+          message: 'Hello, http://localhost:8086!',
+        },
       },
     },
   },

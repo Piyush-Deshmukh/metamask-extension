@@ -1,7 +1,7 @@
-import { CHAIN_IDS } from '../../shared/constants/network';
-import { KeyringType } from '../../shared/constants/keyring';
 import { NetworkType } from '@metamask/controller-utils';
 import { NetworkStatus } from '@metamask/network-controller';
+import { CHAIN_IDS } from '../../shared/constants/network';
+import { KeyringType } from '../../shared/constants/keyring';
 
 const createGetSmartTransactionFeesApiResponse = () => {
   return {

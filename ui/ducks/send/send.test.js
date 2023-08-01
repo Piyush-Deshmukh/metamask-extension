@@ -2,6 +2,8 @@ import sinon from 'sinon';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { BigNumber } from '@ethersproject/bignumber';
+import { NetworkType } from '@metamask/controller-utils';
+import { NetworkStatus } from '@metamask/network-controller';
 import {
   CONTRACT_ADDRESS_ERROR,
   INSUFFICIENT_FUNDS_ERROR,
@@ -74,8 +76,6 @@ import sendReducer, {
   updateGasPrice,
 } from './send';
 import { draftTransactionInitialState, editExistingTransaction } from '.';
-import { NetworkType } from '@metamask/controller-utils';
-import { NetworkStatus } from '@metamask/network-controller';
 
 const mockStore = createMockStore([thunk]);
 

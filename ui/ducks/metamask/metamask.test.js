@@ -1,4 +1,5 @@
 import { NetworkType } from '@metamask/controller-utils';
+import { NetworkStatus } from '@metamask/network-controller';
 import { TransactionStatus } from '../../../shared/constants/transaction';
 import * as actionConstants from '../../store/actionConstants';
 import reduceMetamask, {
@@ -11,7 +12,6 @@ import reduceMetamask, {
   getUnapprovedTxs,
   isNotEIP1559Network,
 } from './metamask';
-import { NetworkStatus } from '@metamask/network-controller';
 
 describe('MetaMask Reducers', () => {
   const mockState = {
@@ -106,13 +106,13 @@ describe('MetaMask Reducers', () => {
             gasPrice: '4a817c800',
           },
         },
+        selectedNetworkClientId: NetworkType.mainnet,
         networksMetadata: {
-          selectedNetworkClientId: NetworkType.mainnet,
           [NetworkType.mainnet]: {
             EIPS: {
               1559: true,
             },
-            status: 'available',
+            status: NetworkStatus.Available,
           },
         },
       },
@@ -376,7 +376,7 @@ describe('MetaMask Reducers', () => {
       ).toStrictEqual(true);
     });
 
-    it('should return false if networkDetails.EIPS.1559 is not false', () => {
+    it('should return false if networksMetadata[selectedNetworkClientId].EIPS.1559 is not false', () => {
       expect(isNotEIP1559Network(mockState)).toStrictEqual(false);
 
       expect(
