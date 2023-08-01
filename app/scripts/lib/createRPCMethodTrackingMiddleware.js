@@ -117,7 +117,9 @@ export default function createRPCMethodTrackingMiddleware({
   trackEvent,
   getMetricsState,
   rateLimitSeconds = 60 * 5,
+  ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
   securityProviderRequest,
+  ///: END:ONLY_INCLUDE_IN
 }) {
   return async function rpcMethodTrackingMiddleware(
     /** @type {any} */ req,
@@ -183,6 +185,7 @@ export default function createRPCMethodTrackingMiddleware({
         }
         const paramsExamplePassword = req?.params?.[2];
 
+        ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
         const msgData = {
           msgParams: {
             ...paramsExamplePassword,
@@ -193,6 +196,7 @@ export default function createRPCMethodTrackingMiddleware({
           status: TransactionStatus.unapproved,
           type: req.method,
         };
+        ///: END:ONLY_INCLUDE_IN
 
         try {
           ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
