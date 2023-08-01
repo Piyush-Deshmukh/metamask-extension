@@ -170,15 +170,15 @@ const firstTimeState = {
         status: 'available',
       },
     },
-    NotificationController: {
-      notifications: {
-        [NOTIFICATION_ID]: {
-          id: NOTIFICATION_ID,
-          origin: 'local:http://localhost:8086/',
-          createdDate: 1652967897732,
-          readDate: null,
-          message: 'Hello, http://localhost:8086!',
-        },
+  },
+  NotificationController: {
+    notifications: {
+      [NOTIFICATION_ID]: {
+        id: NOTIFICATION_ID,
+        origin: 'local:http://localhost:8086/',
+        createdDate: 1652967897732,
+        readDate: null,
+        message: 'Hello, http://localhost:8086!',
       },
     },
   },
