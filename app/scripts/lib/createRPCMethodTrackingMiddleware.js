@@ -197,7 +197,7 @@ export default function createRPCMethodTrackingMiddleware({
         try {
           let securityProviderResponse;
 
-          if (!!securityProviderRequest) {
+          if (securityProviderRequest) {
             securityProviderResponse = await securityProviderRequest(
               msgData,
               req.method,
