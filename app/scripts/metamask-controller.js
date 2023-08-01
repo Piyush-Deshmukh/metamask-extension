@@ -62,8 +62,6 @@ import {
 ///: END:ONLY_INCLUDE_IN
 ///: BEGIN:ONLY_INCLUDE_IN(keyring-snaps)
 import { SnapKeyring } from '@metamask/eth-snap-keyring';
-// eslint-disable-next-line import/order
-import AccountsController from './controllers/accounts-controller';
 ///: END:ONLY_INCLUDE_IN
 
 ///: BEGIN:ONLY_INCLUDE_IN(build-mmi)
@@ -152,6 +150,7 @@ import { getTokenValueParam } from '../../shared/lib/metamask-controller-utils';
 import { isManifestV3 } from '../../shared/modules/mv3.utils';
 import { hexToDecimal } from '../../shared/modules/conversion.utils';
 import { ACTION_QUEUE_METRICS_E2E_TEST } from '../../shared/constants/test-flags';
+import AccountsController from './controllers/accounts-controller';
 
 ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
 import { createPPOMMiddleware } from './lib/ppom/ppom-middleware';
@@ -1010,35 +1009,6 @@ export default class MetamaskController extends EventEmitter {
       },
     });
 
-    const accountsControllerMessenger = this.controllerMessenger.getRestricted({
-      name: 'AccountsController',
-      allowedEvents: [
-        'SnapController:stateChange',
-        'KeyringController:accountRemoved',
-        'KeyringController:stateChange',
-      ],
-    });
-
-    this.accountsController = new AccountsController({
-      messenger: accountsControllerMessenger,
-      state: initState.accountsController,
-      keyringController: this.keyringController,
-      snapController: this.snapController,
-      identities: initState.PreferencesController.identities,
-      onKeyringAccountRemoved: keyringControllerMessenger.subscribe.bind(
-        keyringControllerMessenger,
-        'KeyringController:accountRemoved',
-      ),
-      onKeyringStateChange: keyringControllerMessenger.subscribe.bind(
-        keyringControllerMessenger,
-        'KeyringController:stateChange',
-      ),
-      onSnapStateChange: this.controllerMessenger.subscribe.bind(
-        this.controllerMessenger,
-        'SnapController:stateChange',
-      ),
-    });
-
     this.notificationController = new NotificationController({
       messenger: this.controllerMessenger.getRestricted({
         name: 'NotificationController',
@@ -1125,6 +1095,33 @@ export default class MetamaskController extends EventEmitter {
     });
 
     ///: END:ONLY_INCLUDE_IN
+
+    const accountsControllerMessenger = this.controllerMessenger.getRestricted({
+      name: 'AccountsController',
+      allowedEvents: [
+        'SnapController:stateChange',
+        'KeyringController:accountRemoved',
+        'KeyringController:stateChange',
+      ],
+    });
+
+    console.log('init accounts controller state', initState.AccountsController);
+
+    this.accountsController = new AccountsController({
+      messenger: accountsControllerMessenger,
+      state: initState.AccountsController,
+      keyringController: this.keyringController,
+      snapController: this.snapController,
+      identities: initState.PreferencesController?.identities,
+      onKeyringStateChange: keyringControllerMessenger.subscribe.bind(
+        keyringControllerMessenger,
+        'KeyringController:stateChange',
+      ),
+      onSnapStateChange: this.controllerMessenger.subscribe.bind(
+        this.controllerMessenger,
+        'SnapController:stateChange',
+      ),
+    });
 
     ///: BEGIN:ONLY_INCLUDE_IN(desktop)
     this.desktopController = new DesktopController({
@@ -1702,9 +1699,7 @@ export default class MetamaskController extends EventEmitter {
     this.memStore = new ComposableObservableStore({
       config: {
         AppStateController: this.appStateController.store,
-        ///: BEGIN:ONLY_INCLUDE_IN(keyring-snaps)
         AccountsController: this.accountsController,
-        ///: END:ONLY_INCLUDE_IN
         NetworkController: this.networkController,
         CachedBalancesController: this.cachedBalancesController.store,
         KeyringController: this.keyringController.memStore,
@@ -3010,9 +3005,9 @@ export default class MetamaskController extends EventEmitter {
       // });
 
       // console.log('setting account');
-      this.accountsController.setSelectedAccount(
-        'd92ecbfc-a77e-4d60-ac22-dd0ac927f398',
-      );
+      // this.accountsController.setSelectedAccount(
+      //   'd92ecbfc-a77e-4d60-ac22-dd0ac927f398',
+      // );
 
       // set new identities
       this.preferencesController.setAddresses(accounts);
@@ -3080,16 +3075,6 @@ export default class MetamaskController extends EventEmitter {
     this.setLedgerTransportPreference(transportPreference);
 
     await this.accountsController.updateAccounts();
-    // const selectedAccount = uuid({
-    //   random: sha256FromString(
-    //     this.preferencesController.getSelectedAddress(),
-    //   ).slice(0, 16),
-    // });
-
-    // console.log('setting account');
-    this.accountsController.setSelectedAccount(
-      'd92ecbfc-a77e-4d60-ac22-dd0ac927f398',
-    );
 
     return this.keyringController.fullUpdate();
   }
@@ -3465,6 +3450,7 @@ export default class MetamaskController extends EventEmitter {
     let newAccount = this.accountsController.getSelectedAccount();
 
     if (accountName) {
+      console.log('setting new name', accountName);
       this.accountsController.setAccountName(newAccount.id, accountName);
       newAccount = this.accountsController.getSelectedAccount();
     }
