@@ -1448,11 +1448,7 @@ export function getIsTransactionSecurityCheckEnabled(state) {
  * @returns Boolean
  */
 export function getIsSecurityAlertsEnabled(state) {
-  // if the old settings is on, then return true else return false
-  return (
-    state.metamask.securityAlertsEnabled ||
-    state.metamask.transactionSecurityCheckEnabled
-  );
+  return state.metamask.securityAlertsEnabled;
 }
 ///: END:ONLY_INCLUDE_IN
 

@@ -195,6 +195,7 @@ export default function createRPCMethodTrackingMiddleware({
         };
 
         try {
+          ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
           const securityProviderResponse = await securityProviderRequest(
             msgData,
             req.method,
@@ -209,6 +210,7 @@ export default function createRPCMethodTrackingMiddleware({
               MetaMetricsEventUiCustomization.FlaggedAsSafetyUnknown,
             ];
           }
+          ///: END:ONLY_INCLUDE_IN
 
           if (method === MESSAGE_TYPE.PERSONAL_SIGN) {
             const { isSIWEMessage } = detectSIWE({ data });

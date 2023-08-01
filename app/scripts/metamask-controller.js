@@ -4761,7 +4761,7 @@ export default class MetamaskController extends EventEmitter {
   };
 
   ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
-  async securityProviderRequest(_requestData, _methodName) {
+  async securityProviderRequest(requestData, methodName) {
     const { currentLocale, transactionSecurityCheckEnabled } =
       this.preferencesController.store.getState();
 
@@ -4772,8 +4772,8 @@ export default class MetamaskController extends EventEmitter {
 
       try {
         const securityProviderResponse = await securityProviderCheck(
-          _requestData,
-          _methodName,
+          requestData,
+          methodName,
           chainId,
           currentLocale,
         );

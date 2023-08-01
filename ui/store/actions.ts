@@ -4385,8 +4385,6 @@ export function setTransactionSecurityCheckEnabled(
 export function setSecurityAlertsEnabled(val: boolean): void {
   try {
     submitRequestToBackground('setSecurityAlertsEnabled', [val]);
-    // also update the old settings
-    submitRequestToBackground('setTransactionSecurityCheckEnabled', [val]);
   } catch (error) {
     logErrorWithMessage(error);
   }
