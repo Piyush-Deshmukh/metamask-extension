@@ -110,7 +110,6 @@
       "showIncomingTransactions": true
     },
     "networkId": "5",
-    "networkStatus": "available",
     "providerConfig": {
       "type": "rpc",
       "chainId": "0x5",

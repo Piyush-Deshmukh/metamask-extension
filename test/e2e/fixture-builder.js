@@ -3,13 +3,14 @@ const {
   SnapCaveatType,
 } = require('@metamask/snaps-utils');
 const { merge } = require('lodash');
-const { toHex } = require('@metamask/controller-utils');
+const { toHex, NetworkType } = require('@metamask/controller-utils');
 const { CHAIN_IDS } = require('../../shared/constants/network');
 const {
   ACTION_QUEUE_METRICS_E2E_TEST,
 } = require('../../shared/constants/test-flags');
 const { SMART_CONTRACTS } = require('./seeder/smart-contracts');
 const { DAPP_URL } = require('./helpers');
+const { NetworkStatus } = require('@metamask/network-controller');
 
 function defaultFixture() {
   return {
@@ -212,7 +213,13 @@ function defaultFixture() {
       },
       NetworkController: {
         networkId: '1337',
-        networkStatus: 'available',
+        selectedNetworkClientId: 'networkConfigurationId',
+        networksMetadata: {
+          networkConfigurationId: {
+            EIPS: {},
+            status: NetworkStatus.Available,
+          },
+        },
         providerConfig: {
           chainId: CHAIN_IDS.LOCALHOST,
           nickname: 'Localhost 8545',
@@ -345,7 +352,13 @@ function onboardingFixture() {
       },
       NetworkController: {
         networkId: '1337',
-        networkStatus: 'available',
+        selectedNetworkClientId: 'networkConfigurationId',
+        networksMetadata: {
+          networkConfigurationId: {
+            EIPS: {},
+            status: NetworkStatus.Available,
+          },
+        },
         providerConfig: {
           ticker: 'ETH',
           type: 'rpc',

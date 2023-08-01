@@ -44,7 +44,13 @@ describe('MetaMask Reducers', () => {
         nativeCurrency: 'ETH',
         useCurrencyRateCheck: true,
         networkId: '5',
-        networkStatus: 'available',
+        selectedNetworkClientId: NetworkType.goerli,
+        networksMetadata: {
+          [NetworkType.goerli]: {
+            EIPS: {},
+            status: NetworkStatus.Available,
+          },
+        },
         providerConfig: {
           type: 'testnet',
           chainId: '0x5',
@@ -104,15 +110,6 @@ describe('MetaMask Reducers', () => {
             txValue: 'de0b6b3a7640000',
             maxCost: 'de234b52e4a0800',
             gasPrice: '4a817c800',
-          },
-        },
-        selectedNetworkClientId: NetworkType.mainnet,
-        networksMetadata: {
-          [NetworkType.mainnet]: {
-            EIPS: {
-              1559: true,
-            },
-            status: NetworkStatus.Available,
           },
         },
       },

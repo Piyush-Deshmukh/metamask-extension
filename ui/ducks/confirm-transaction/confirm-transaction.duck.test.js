@@ -4,6 +4,8 @@ import sinon from 'sinon';
 import { TransactionStatus } from '../../../shared/constants/transaction';
 
 import ConfirmTransactionReducer, * as actions from './confirm-transaction.duck';
+import { NetworkStatus } from '@metamask/network-controller';
+import { NetworkType } from '@metamask/controller-utils';
 
 const initialState = {
   txData: {},
@@ -344,7 +346,13 @@ describe('Confirm Transaction Duck', () => {
           conversionRate: 468.58,
           currentCurrency: 'usd',
           networkId: '5',
-          networkStatus: 'available',
+          selectedNetworkClientId: NetworkType.goerli,
+          networksMetadata: {
+            [NetworkType.goerli]: {
+              EIPS: {},
+              status: NetworkStatus.Available,
+            },
+          },
           providerConfig: {
             chainId: '0x5',
           },
