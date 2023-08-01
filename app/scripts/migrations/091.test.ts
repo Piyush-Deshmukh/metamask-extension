@@ -1,15 +1,6 @@
 import { InfuraNetworkType, NetworkType } from '@metamask/controller-utils';
 import { migrate, version } from './091';
 
-jest.mock('uuid', () => {
-  const actual = jest.requireActual('uuid');
-
-  return {
-    ...actual,
-    v4: jest.fn(),
-  };
-});
-
 describe('migration #91', () => {
   it('should update the version metadata', async () => {
     const oldStorage = {
