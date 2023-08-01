@@ -3011,10 +3011,6 @@ export function setUse4ByteResolution(
     log.debug(`background.setUse4ByteResolution`);
     try {
       await submitRequestToBackground('setUse4ByteResolution', [val]);
-      if (val === false) {
-        log.debug(`background.clearKnownMethodData`);
-        await submitRequestToBackground('clearKnownMethodData');
-      }
       await forceUpdateMetamaskState(dispatch);
     } finally {
       dispatch(hideLoadingIndication());
