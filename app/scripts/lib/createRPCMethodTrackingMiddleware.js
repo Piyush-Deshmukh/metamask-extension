@@ -1,10 +1,12 @@
 import { errorCodes } from 'eth-rpc-errors';
 import { detectSIWE } from '@metamask/controller-utils';
 
+///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
+import { isValidAddress } from 'ethereumjs-util';
+///: END:ONLY_INCLUDE_IN
 import { MESSAGE_TYPE, ORIGIN_METAMASK } from '../../../shared/constants/app';
 
 ///: BEGIN:ONLY_INCLUDE_IN(build-main,build-mmi,build-beta)
-import { isValidAddress } from 'ethereumjs-util';
 import { TransactionStatus } from '../../../shared/constants/transaction';
 ///: END:ONLY_INCLUDE_IN
 
