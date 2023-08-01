@@ -94,6 +94,9 @@ import * as m087 from './087';
 import * as m088 from './088';
 import * as m089 from './089';
 import * as m090 from './090';
+///: BEGIN:ONLY_INCLUDE_IN(blockaid)
+import * as m091 from './091';
+///: END:ONLY_INCLUDE_IN
 
 const migrations = [
   m002,
@@ -185,6 +188,9 @@ const migrations = [
   m088,
   m089,
   m090,
+  ///: BEGIN:ONLY_INCLUDE_IN(blockaid)
+  m091,
+  ///: END:ONLY_INCLUDE_IN
 ];
 
 export default migrations;

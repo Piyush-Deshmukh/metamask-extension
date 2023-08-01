@@ -4,7 +4,8 @@ import { cloneDeep } from 'lodash';
 export const version = 91;
 
 /**
- * Remove the now-obsolete tokens controller `suggestedAssets` state.
+ * Remove the now-obsolete preferences controller `transactionSecurityCheckEnabled` state
+ * and migrate to the new `securityAlertsEnabled`
  *
  * @param originalVersionedData - Versioned MetaMask extension state, exactly what we persist to dist.
  * @param originalVersionedData.meta - State metadata.
