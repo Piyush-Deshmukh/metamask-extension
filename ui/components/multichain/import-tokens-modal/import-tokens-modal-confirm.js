@@ -10,6 +10,7 @@ import {
 import {
   AlignItems,
   Display,
+  Size,
   TextColor,
   TextVariant,
 } from '../../../helpers/constants/design-system';
@@ -23,7 +24,7 @@ export const ImportTokensModalConfirm = ({ onBackClick, onImportClick }) => {
   const pendingTokens = useSelector(getPendingTokens);
 
   return (
-    <Box paddingTop={0} paddingRight={6} paddingBottom={6} paddingLeft={6}>
+    <Box padding={4}>
       <Text>{t('likeToImportTokens')}</Text>
       <Box marginTop={4} marginBottom={4}>
         <Box display={Display.Flex}>
@@ -80,10 +81,11 @@ export const ImportTokensModalConfirm = ({ onBackClick, onImportClick }) => {
           })}
         </Box>
         <Box display={Display.Flex} gap={2} marginTop={4}>
-          <ButtonSecondary onClick={onBackClick} block>
+          <ButtonSecondary size={Size.LG} onClick={onBackClick} block>
             {t('back')}
           </ButtonSecondary>
           <ButtonPrimary
+            size={Size.LG}
             onClick={onImportClick}
             block
             data-testid="import-tokens-modal-import-button"

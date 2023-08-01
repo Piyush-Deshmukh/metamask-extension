@@ -470,6 +470,7 @@ export default class SecurityTab extends PureComponent {
         ref={this.settingsRefs[6]}
         className="settings-page__content-row"
         data-testid="advanced-setting-gas-fee-estimation"
+        id="advanced-settings-autodetect-tokens"
       >
         <div className="settings-page__content-item">
           <span>{t('autoDetectTokens')}</span>

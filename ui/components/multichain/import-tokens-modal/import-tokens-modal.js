@@ -49,6 +49,7 @@ import TokenList from '../../app/import-token/token-list';
 import {
   FontWeight,
   Severity,
+  Size,
   TextAlign,
   TextColor,
 } from '../../../helpers/constants/design-system';
@@ -436,7 +437,7 @@ export const ImportTokensModal = ({ onClose }) => {
           />
         ) : (
           <>
-            <Tabs t={t}>
+            <Tabs t={t} marginTop={6}>
               {showSearchTab ? (
                 <Tab tabKey="search" name={t('search')}>
                   <Box padding={4}>
@@ -449,7 +450,7 @@ export const ImportTokensModal = ({ onClose }) => {
                               key="token-detection-announcement"
                               onClick={() => {
                                 history.push(
-                                  `${SECURITY_ROUTE}#token-description`,
+                                  `${SECURITY_ROUTE}#advanced-settings-autodetect-tokens`,
                                 );
                                 onClose();
                               }}
@@ -498,7 +499,7 @@ export const ImportTokensModal = ({ onClose }) => {
                           type="link"
                           key="import-token-token-detection-announcement"
                           onClick={() =>
-                            history.push(`${SECURITY_ROUTE}#token-description`)
+                            history.push(`${SECURITY_ROUTE}#advanced-settings-autodetect-tokens`)
                           }
                         >
                           {t('inYourSettings')}
@@ -615,6 +616,7 @@ export const ImportTokensModal = ({ onClose }) => {
             <Box padding={6}>
               <ButtonPrimary
                 onClick={() => handleNext()}
+                size={Size.LG}
                 disabled={Boolean(hasError()) || !hasSelected()}
                 block
               >
