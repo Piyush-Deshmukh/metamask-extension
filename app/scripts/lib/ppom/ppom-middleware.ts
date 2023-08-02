@@ -45,6 +45,7 @@ export function createPPOMMiddleware(
             return ppom.validateJsonRpc(req);
           },
         );
+        console.log('result =', req.securityAlertResponse);
       }
     } catch (error: any) {
       sentry?.captureException(error);
